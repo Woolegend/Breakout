@@ -11,6 +11,11 @@
 #define		HEIGHT			900
 
 Object obj;
+bool isPause;
+
+void init() {
+	isPause = false;
+}
 
 void MyReshape(int w, int h) {
 	glViewport(0, 0, w, h);
@@ -24,7 +29,9 @@ void frameReset() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void RenderScene(void) {
+void RenderScene(void) 
+{
+	if (isPause) return;
 	frameReset();
 
 	obj.drawObject();
@@ -66,6 +73,7 @@ void MyKeyUp(int key, int x, int y) {
 void MyKey(unsigned char key, int x, int y) {
 	switch (key) {
 	case ' ':
+		isPause = isPause ? false : true;
 		break;
 	default:
 		break;
@@ -78,10 +86,11 @@ int main(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize(WIDTH, HEIGHT);
 	glutCreateWindow("Breakout! Bat_and_Ball~");
+	init();
 
 	//glutSpecialFunc(MyKeyDown);
 	//glutSpecialUpFunc(MyKeyUp);
-	//glutKeyboardFunc(MyKey);
+	glutKeyboardFunc(MyKey);
 
 	glutReshapeFunc(MyReshape);
 	glutDisplayFunc(RenderScene);

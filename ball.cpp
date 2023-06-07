@@ -4,7 +4,7 @@ Ball::Ball(float x, float y) : center(x, y)
 {
 	radius = 10;
 	speed = 5;
-	direction.setVector(new Vector2D(2, 4));
+	direction = Vector2D(2, 4);
 	direction.normalizer();
 	initVertex();
 }
@@ -33,7 +33,7 @@ void Ball::drawBall() {
 }
 
 void Ball::update() {
-	center.addVector(&direction, speed);
+	center = center + speed * direction;
 }
 
 

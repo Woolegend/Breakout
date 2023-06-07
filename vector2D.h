@@ -14,12 +14,15 @@ public:
     Vector2D(const float* s, const float* e);
 
     void operator=(const Vector2D& v);
-    Vector2D operator+(const Vector2D& v);
-    Vector2D operator-(const Vector2D& v);
-    Vector2D operator*(const Vector2D& v);
-    Vector2D operator*(float num);
-    Vector2D operator/(const Vector2D& v);
-    Vector2D operator/(float num);
+    friend Vector2D operator+(const Vector2D& v1, const Vector2D& v2);
+    friend Vector2D operator-(const Vector2D& v1, const Vector2D& v2);
+    friend Vector2D operator*(const Vector2D& v1, const Vector2D& v2);
+    friend Vector2D operator*(const Vector2D& v, const float num);
+    friend Vector2D operator*(const float num, const Vector2D& v);
+    friend Vector2D operator/(const Vector2D& v1, const Vector2D& v2);
+    friend Vector2D operator/(const Vector2D& v, const float num);
+    friend Vector2D operator/(const float num, const Vector2D&);
+
 
     float scala();
     void setVector(float xx, float yy);

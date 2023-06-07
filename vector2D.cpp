@@ -24,36 +24,40 @@ void Vector2D::operator=(const Vector2D& v) {
     x = v.x;
     y = v.y;
 }
-
-Vector2D Vector2D::operator+(const Vector2D& v) {
-    Vector2D t(x + v.x, y + v.y);
-    return t;
+Vector2D operator+(const Vector2D& v1, const Vector2D& v2) {
+    Vector2D tmp(v1.x + v2.x, v1.y + v2.y);
+    return tmp;
+}
+Vector2D operator-(const Vector2D& v1, const Vector2D& v2) {
+    Vector2D tmp(v1.x - v2.x, v1.y - v2.y);
+    return tmp;
+}
+Vector2D operator*(const Vector2D& v1, const Vector2D& v2) {
+    Vector2D tmp(v1.x * v2.x, v1.y * v2.y);
+    return tmp;
+}
+Vector2D operator*(const Vector2D& v, const float num) {
+    Vector2D tmp(v.x * num, v.y * num);
+    return tmp;
+}
+Vector2D operator*(const float num, const Vector2D& v) {
+    Vector2D tmp(num * v.x, num * v.y);
+    return tmp;
+}
+Vector2D operator/(const Vector2D& v1, const Vector2D& v2) {
+    Vector2D tmp(v1.x / v2.x, v1.y / v2.y);
+    return tmp;
+}
+Vector2D operator/(const Vector2D& v, const float num) {
+    Vector2D tmp(v.x / num, v.y / num);
+    return tmp;
 }
 
-Vector2D Vector2D::operator-(const Vector2D& v) {
-    Vector2D t(x - v.x, y - v.y);
-    return t;
+Vector2D operator/(const float num, const Vector2D& v) {
+    Vector2D tmp(num / v.x, num / v.y);
+    return tmp;
 }
 
-Vector2D Vector2D::operator*(const Vector2D& v) {
-    Vector2D t(x * v.x, y * v.y);
-    return t;
-}
-
-Vector2D Vector2D::operator*(float num) {
-    Vector2D t(x * num, y * num);
-    return t;
-}
-
-Vector2D Vector2D::operator/(const Vector2D& v) {
-    Vector2D t(x / v.x, y / v.y);
-    return t;
-}
-
-Vector2D Vector2D::operator/(float num) {
-    Vector2D t(x / num, y / num);
-    return t;
-}
 
 void Vector2D::setVector(float xx, float yy) {
     x = xx;

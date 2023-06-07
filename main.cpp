@@ -9,11 +9,13 @@
 
 Object obj;
 bool isPause, isLDown, isRDown;
+int speed;
 
 void init() {
 	isPause = false;
 	isLDown = false;
 	isRDown = false;
+	speed = 50;
 }
 
 void MyReshape(int w, int h) {
@@ -35,8 +37,9 @@ void RenderScene(void)
 
 	obj.drawObject();
 	obj.updateObject(isLDown, isRDown);
+	obj.checkCollision();
 
-	Sleep(30);
+	Sleep(speed);
 
 	glutSwapBuffers();
 	glFlush();
@@ -70,6 +73,12 @@ void MyKey(unsigned char key, int x, int y) {
 	switch (key) {
 	case ' ':
 		isPause = isPause ? false : true;
+		break;
+	case 'a':
+		if (speed > 20) speed -= 10;
+		break;
+	case 's':
+		if (speed < 100) speed += 10;
 		break;
 	default:
 		break;

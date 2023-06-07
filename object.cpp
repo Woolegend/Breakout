@@ -9,21 +9,21 @@ int board[BRICK_COL][BRICK_ROW] = {
 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
-
 Object::Object() {
 	initObject();
 }
 
 void Object::initObject() {
-	ball = new Ball(400, 100);	
+	
+	//init ball
+	ball = new Ball(300, 50);	
+	
+	//init bat
 	bat = new Bat(300, 35);
-
-	wall[0] = new Wall(0, 0, 0, 900);
-	wall[1] = new Wall(0, 900, 600, 900);
-	wall[2] = new Wall(600, 900, 600, 0);
-	wall[3] = new Wall(600, 0, 0, 0);
-
+	
+	//init walls
 	/*
+	wall_num = 6;
 	wall[0] = new Wall(125, 1000, 875, 1000);
 	wall[1] = new Wall(875, 1000, 1000, 500);
 	wall[2] = new Wall(1000, 500, 875, 0);
@@ -31,7 +31,15 @@ void Object::initObject() {
 	wall[4] = new Wall(125, 0, 0, 500);
 	wall[5] = new Wall(0, 500, 125, 1000);
 	*/
-
+	
+	wall_num = 4;
+	wall[0] = new Wall(0, 900, 600, 900);
+	wall[1] = new Wall(600, 900, 600, 0);
+	wall[2] = new Wall(600, 0, 0, 0);
+	wall[3] = new Wall(0, 0, 0, 900);
+	
+	
+	//init Bricks
 	brick_num = 0;
 	for (int h = 0; h < BRICK_COL; h++) {
 		for (int w = 0; w < BRICK_ROW; w++) {
@@ -47,51 +55,15 @@ void Object::drawObject() {
 	ball->drawBall();
 	bat->drawBat();
 	//ball->drawDirection();
-	Vector2D L2L, P2L, C2L, nor;
-	Vector2D *tmp;
-	for (int i = 0; i < NUMOFWALL; i++) {
+	
+	for (int i = 0; i < wall_num; i++) {
 		wall[i]->drawWall();
 		wall[i]->drawNormal();
 	}
+
 	for (int i = 0; i < brick_num; i++) {
-		brick[i]->drawBrick();
+		//brick[i]->drawBrick();
 	}
-
-	//wall
-	for (int i = 0; i < NUMOFWALL; i++) {
-		tmp = lineToLine(wall[i]->start, wall[i]->end);
-		if (tmp != NULL) {
-			L2L.setVector(tmp);
-			P2L.setVector(pointToLine(wall[i]->start, wall[i]->end));
-			nor = wall[i]->normal;
-		}
-	}
-
-	//bat
-	tmp = lineToLine(bat->vtx[0], bat->vtx[1]);
-	if (tmp != NULL) {
-		L2L.setVector(tmp);
-		P2L.setVector(pointToLine(bat->vtx[0], bat->vtx[1]));
-		nor.getNormalVector((bat->vtx[1] - bat->vtx[0]) * -1);
-		nor.normalizer();
-		
-	}
-
-	//brick
-	for (int i = 0; i < brick_num; i++) {
-		for (int j = 0; j < 4; j++) {
-			tmp = lineToLine(brick[i]->vtx[j], brick[i]->vtx[(j+1)%3]);
-			if (tmp != NULL) {
-				L2L.setVector(tmp);
-				P2L.setVector(pointToLine(brick[i]->vtx[j], brick[i]->vtx[(j + 1) % 3]));
-				nor.getNormalVector(brick[i]->vtx[j] - brick[i]->vtx[(j + 1) % 3]);
-				break;
-			}
-		}
-	}
-
-	collision(P2L, nor);
-	drawDirections(L2L, P2L, nor);
 	glPopMatrix();
 }
 
@@ -100,47 +72,115 @@ void Object::updateObject(bool L, bool R) {
 	bat->update(L, R);
 }
 
-void Object::drawDirections(Vector2D l2l, Vector2D p2l, Vector2D nor) {
-	Vector2D dir;
-	dir = nor * 2 + ball->direction;
+void Object::checkCollision() {
+	Vector2D *pos = NULL, *pTmp, nVec;
+	float dis = 10000, dTmp;
+
+	if (true) {
+		for (int i = 0; i < wall_num; i++) {
+			pTmp = checkIntersection(wall[i]);
+			if (pTmp != NULL) {
+				dTmp = (*pTmp - ball->center).scala();
+				if (dTmp < dis) {
+					dis = dTmp;
+					pos = pTmp;
+					nVec = wall[i]->normal;
+				}
+			}
+		}
+	}
+	
+	if (true) {
+		pTmp = checkIntersection(*bat);
+		if (pTmp != NULL) {
+			dTmp = (*pTmp - ball->center).scala();
+			if (dTmp < dis) {
+				dis = dTmp;
+				pos = pTmp;
+				nVec.getNormalVector(bat->center - *pTmp);
+				if(nVec.x * ball->direction.x < 0) nVec = nVec * Vector2D(-1, 1);
+				if(nVec.y < 0 ) nVec = nVec * Vector2D(1, -1);
+				nVec.normalizer();
+			}
+		}
+	}
+	if (false) {
+		
+	}
+
+	drawDirections(pos, nVec);
+	if (dis <= ball->radius) {
+		printf("collision\n");
+		ball->direction = ball->direction + 2 * nVec;
+		ball->direction.normalizer();
+	}
+	
+}
+
+Vector2D* Object::checkIntersection(Wall* w) {
+	Vector2D *l2l, *p2l, *c2l;
+	float dis;
+	l2l = lineToLine(w->start, w->end);
+	if (l2l == NULL) return NULL;
+	p2l = pointToLine(w->start, w->end);
+	c2l = circleToLine(w->start, w->end , *l2l, *p2l);
+	return c2l;
+}
+
+/*
+Vector2D* Object::checkIntersection(Brick brick) {
+
+}
+*/
+
+Vector2D* Object::checkIntersection(Bat b) {
+	Vector2D *l2l, *p2l, *c2l;
+	float dis;
+	l2l = lineToLine(b.vtx[0], b.vtx[1]);
+	if (l2l == NULL) return NULL;
+	p2l = pointToLine(b.vtx[0], b.vtx[1]);
+	c2l = circleToLine(b.vtx[0], b.vtx[1] , *l2l, *p2l);
+	return c2l;
+}
+
+void Object::drawDirections(Vector2D *pos, Vector2D dir) {
+	if (pos == NULL) return;
+	glPushMatrix();
+	glTranslatef(LEFT, BOTTOM, 0);
+	glBegin(GL_LINE_LOOP);
+	glColor3f(1, 0, 0);
+	float	delta, theta;
+	float	x, y;
+	delta = 2 * PI / BALLSLICE;
+	for (int i = 0; i < BALLSLICE; i++) {
+		theta = delta * i;
+		x = ball->radius * cos(theta) + pos->x;
+		y = ball->radius * sin(theta) + pos->y;
+		glVertex2f(x, y);
+	}
+	glEnd();
+
+	dir = ball->direction + 2 * dir;
 	dir.normalizer();
-	dir = dir * 100 + l2l;
+	dir = dir * 100;
 
 	glBegin(GL_LINES);
 	glColor3f(0, 1, 0);
 	glVertex2f(ball->center.x, ball->center.y);
-	glVertex2f(l2l.x, l2l.y);
+	glVertex2f(pos->x, pos->y);
 
-	glVertex2f(ball->center.x, ball->center.y);
-	glVertex2f(p2l.x, p2l.y);
-
-	glVertex2f(l2l.x, l2l.y);
-	glVertex2f(dir.x, dir.y);
+	glVertex2f(pos->x, pos->y);
+	glVertex2f(dir.x + pos->x, dir.y + pos->y);
 	glEnd();
-
-	glPointSize(10);
-	glBegin(GL_POINTS);
-	glColor3f(1, 0, 0);
-	glVertex2f(p2l.x, p2l.y);
-	glColor3f(0, 0, 1);
-	glVertex2f(l2l.x, l2l.y);
-	glEnd();
-}
-
-void Object::collision(Vector2D p2l, Vector2D nor) {
-	float distance = (p2l - ball->center).scala();
-	if (distance <= ball->radius) {
-		ball->direction = ball->direction + (nor * 2);
-		ball->direction.normalizer();
-	}
+	glPopMatrix();
 }
 
 Vector2D* Object::lineToLine(Vector2D v1, Vector2D v2) {
 	float
 		x1 = ball->center.x,
 		y1 = ball->center.y,
-		x2 = ball->direction.x * 10000 + x1,
-		y2 = ball->direction.y * 10000 + y1,
+		x2 = ball->direction.x * 1000 + x1,
+		y2 = ball->direction.y * 1000 + y1,
 		x3 = v1.x,
 		y3 = v1.y,
 		x4 = v2.x,	
@@ -169,16 +209,16 @@ Vector2D* Object::lineToLine(Vector2D v1, Vector2D v2) {
 
 Vector2D* Object::pointToLine(Vector2D v1, Vector2D v2) {
 	float
-		x = ball->center.x,
-		y = ball->center.y,
+		x0 = ball->center.x,
+		y0 = ball->center.y,
 		lx1 = v2.x,
 		ly1 = v2.y,
 		lx2 = v1.x,
 		ly2 = v1.y,
 		a = ly2 - ly1,
-		b = lx2 - lx1,
+		b = lx1 - lx2,
 		c1 = a * lx1 + b * ly1,
-		c2 = -b * x + a * y,
+		c2 = (b * -1) * x0 + a * y0,
 		det = a * a + b * b,
 		cx = 0,
 		cy = 0;
@@ -187,10 +227,20 @@ Vector2D* Object::pointToLine(Vector2D v1, Vector2D v2) {
 		cy = (a * c2 + b * c1) / det;
 	}
 	else {
-		cx = x;
-		cy = y;
+		cx = x0;
+		cy = y0;
 	}
 	return new Vector2D(cx, cy);
 }
 
-// Vector2D* Object::circleToLine(Vector2D l2l, Vector2D p2l) {}
+Vector2D* Object::circleToLine(Vector2D v1, Vector2D v2, Vector2D l2l, Vector2D p2l) {
+	Vector2D tmp;
+	float
+		a2c = (ball->center - l2l).scala(),
+		p2c = (ball->center - p2l).scala();
+	tmp = l2l - ball->radius * a2c / p2c * ball->direction;
+	if (tmp.x + 11 >= min(v1.x, v2.x) && tmp.x - 11 <= max(v1.x, v2.x) &&
+		tmp.y + 11 >= min(v1.y, v2.y) && tmp.y - 11 <= max(v1.y, v2.y)) {
+		return new Vector2D(tmp.x, tmp.y);
+	}
+}

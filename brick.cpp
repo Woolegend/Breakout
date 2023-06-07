@@ -4,7 +4,7 @@
 Brick::Brick(int tp, float x, float y) {
 	type = tp;
 	scale = 40;
-	float spc = 2;
+	float spc = 3;
 	vtx[0].setVector(x * scale + spc, 900 - y * scale - spc);
 	vtx[1].setVector((x + 1) * scale - spc, 900 - y * scale - spc);
 	vtx[2].setVector((x + 1) * scale - spc, 900 - (y + 1) * scale + spc);

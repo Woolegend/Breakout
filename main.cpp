@@ -15,14 +15,14 @@ void init() {
 	isPause = false;
 	isLDown = false;
 	isRDown = false;
-	speed = 50;
+	speed = 5;
 }
 
 void MyReshape(int w, int h) {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0, WIDTH, 0, HEIGHT);
+	gluOrtho2D(0, WIDTHOFVIEW, 0, HEIGHTOFVIEW);
 }
 
 void frameReset() {
@@ -37,7 +37,7 @@ void RenderScene(void)
 
 	obj.drawObject();
 	obj.updateObject(isLDown, isRDown);
-	obj.checkCollision();
+
 
 	Sleep(speed);
 
@@ -75,10 +75,10 @@ void MyKey(unsigned char key, int x, int y) {
 		isPause = isPause ? false : true;
 		break;
 	case 'a':
-		if (speed > 20) speed -= 10;
+		if (speed > 2) speed -= 1;
 		break;
 	case 's':
-		if (speed < 100) speed += 10;
+		if (speed < 10) speed += 1;
 		break;
 	default:
 		break;
@@ -89,7 +89,7 @@ int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitWindowPosition(100, 100);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowSize(WIDTH, HEIGHT);
+	glutInitWindowSize(WIDTHOFVIEW, HEIGHTOFVIEW);
 	glutCreateWindow("Breakout! Bat_and_Ball~");
 	init();
 

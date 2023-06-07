@@ -58,32 +58,6 @@ Vector2D operator/(const float num, const Vector2D& v) {
     return tmp;
 }
 
-
-void Vector2D::setVector(float xx, float yy) {
-    x = xx;
-    y = yy;
-}
-
-void Vector2D::setVector(const float* v) {
-    x = v[0];
-    y = v[1];
-}
-
-void Vector2D::setVector(const Vector2D* v) {
-    x = v->x;
-    y = v->y;
-}
-
-void Vector2D::setVector(const Vector2D* v1, const Vector2D* v2) {
-    x = v2->x - v1->x;
-    y = v2->y - v1->y;
-}
-
-void Vector2D::addVector(const Vector2D* v, float scala) {
-    x = x + scala * v->x;
-    y = y + scala * v->y;
-}
-
 float Vector2D::scala() {
     return float(sqrt(pow(x, 2) + pow(y, 2)));
 }

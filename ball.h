@@ -10,15 +10,13 @@
 #include "vector2D.h"
 #endif
 
-#define		PI				3.1415
-#define		BALLSLICE		20
+#include "init.h"
 
 class Ball {
 public:
 	Vector2D center;
 	Vector2D* vertex[BALLSLICE];
 	Vector2D direction;
-	float radius;
 	float speed;
 
 	Ball(float x, float y);

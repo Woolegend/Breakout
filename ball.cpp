@@ -2,9 +2,8 @@
 
 Ball::Ball(float x, float y) : center(x, y)
 {
-	radius = 10;
-	speed = 5;
-	direction = Vector2D(2, 4);
+	speed = 1;
+	direction = Vector2D(2, 5);
 	direction.normalizer();
 	initVertex();
 }
@@ -15,8 +14,8 @@ void Ball::initVertex() {
 	delta = 2 * PI / BALLSLICE;
 	for (int i = 0; i < BALLSLICE; i++) {
 		theta = delta * i;
-		x = radius * cos(theta);
-		y = radius * sin(theta);
+		x = RADIUS * cos(theta);
+		y = RADIUS * sin(theta);
 		vertex[i] = new Vector2D(x, y);
 	}
 }

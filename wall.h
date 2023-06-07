@@ -20,9 +20,4 @@ public:
 
 	Wall();
 	Wall(float x1, float y1, float x2, float y2);
-	void setDirection();
-	void setNormal();
-	void drawWall();
-	void drawNormal();
-	void drawBoundingBox();
 };

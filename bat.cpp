@@ -1,9 +1,8 @@
 #include "bat.h"
 
 
-Bat::Bat(float x, float y) {
-	speed = 5, h = 5, w = 100;
-	center.setVector(x, y);
+Bat::Bat(float x, float y): center(x, y) {
+	speed = 1, h = 5, w = 100;
 	update(true, true);
 }
 
@@ -21,8 +20,8 @@ void Bat::update(bool L, bool R) {
 	if (L) center.x = center.x - speed;
 	if (R) center.x = center.x + speed;
 
-	vtx[0].setVector(center.x - w, center.y + h);
-	vtx[1].setVector(center.x + w, center.y + h);
-	vtx[2].setVector(center.x + w, center.y - h);
-	vtx[3].setVector(center.x - w, center.y - h);
+	vtx[0] = Vector2D(center.x - w, center.y + h);
+	vtx[1] = Vector2D(center.x + w, center.y + h);
+	vtx[2] = Vector2D(center.x + w, center.y - h);
+	vtx[3] = Vector2D(center.x - w, center.y - h);
 }

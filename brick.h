@@ -10,16 +10,17 @@
 #include "vector2D.h"
 #endif
 
+#include "init.h"
+
 #define		EMPTY			0;
 #define		NORMAL			1;
 
 class Brick {
 public:
-	int type;
-	float scale;
+	int type, durability;
 	Vector2D center, vtx[4];
 
-	Brick(int tp, float x, float y);
+	Brick(int t, float x, float y);
 
 	void drawBrick();
 };

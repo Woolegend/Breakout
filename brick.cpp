@@ -1,14 +1,16 @@
 #include "brick.h"
 #include<ios>
 
-Brick::Brick(int tp, float x, float y) {
-	type = tp;
-	scale = 40;
-	float spc = 3;
-	vtx[0].setVector(x * scale + spc, 900 - y * scale - spc);
-	vtx[1].setVector((x + 1) * scale - spc, 900 - y * scale - spc);
-	vtx[2].setVector((x + 1) * scale - spc, 900 - (y + 1) * scale + spc);
-	vtx[3].setVector(x * scale + spc, 900 - (y + 1) * scale + spc);
+Brick::Brick(int t, float x, float y):type(t) {
+	float space = 3;
+	durability = 1;
+	x = 220 + x * 2 * SCALE;
+	y = 100 + y * 2 * SCALE;
+	center = Vector2D(x, y);
+	vtx[0] = Vector2D(x  - SCALE + space, HEIGHTOFVIEW - (y  + SCALE - space));
+	vtx[1] = Vector2D(x  + SCALE - space, HEIGHTOFVIEW - (y  + SCALE - space));
+	vtx[2] = Vector2D(x  + SCALE - space, HEIGHTOFVIEW - (y  - SCALE + space));
+	vtx[3] = Vector2D(x  - SCALE + space, HEIGHTOFVIEW - (y  - SCALE + space));
 }
 
 void Brick::drawBrick() {

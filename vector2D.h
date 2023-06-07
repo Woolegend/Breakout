@@ -25,11 +25,6 @@ public:
 
 
     float scala();
-    void setVector(float xx, float yy);
-    void setVector(const float* v);
-    void setVector(const Vector2D* v);
-    void setVector(const Vector2D* v1, const Vector2D* v2);
-    void addVector(const Vector2D* v, float scala);
     void normalizer();
     void getNormalVector(Vector2D v);
     float innerProduct(Vector2D* v);

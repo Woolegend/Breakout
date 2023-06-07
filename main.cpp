@@ -7,14 +7,13 @@
 
 #include "object.h"
 
-#define		WIDTH			600
-#define		HEIGHT			900
-
 Object obj;
-bool isPause;
+bool isPause, isLDown, isRDown;
 
 void init() {
 	isPause = false;
+	isLDown = false;
+	isRDown = false;
 }
 
 void MyReshape(int w, int h) {
@@ -25,7 +24,7 @@ void MyReshape(int w, int h) {
 }
 
 void frameReset() {
-	glClearColor(0.5, 0.5, 0.5, 0.0);
+	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -35,6 +34,7 @@ void RenderScene(void)
 	frameReset();
 
 	obj.drawObject();
+	obj.updateObject(isLDown, isRDown);
 
 	Sleep(30);
 
@@ -44,13 +44,11 @@ void RenderScene(void)
 
 void MyKeyDown(int key, int x, int y) {
 	switch (key) {
-	case GLUT_KEY_UP:
-		break;
-	case GLUT_KEY_DOWN:
-		break;
 	case GLUT_KEY_LEFT:
+		isLDown = true;
 		break;
 	case GLUT_KEY_RIGHT:
+		isRDown = true;
 		break;
 	default:
 		break;
@@ -58,13 +56,11 @@ void MyKeyDown(int key, int x, int y) {
 }
 void MyKeyUp(int key, int x, int y) {
 	switch (key) {
-	case GLUT_KEY_UP:
-		break;
-	case GLUT_KEY_DOWN:
-		break;
 	case GLUT_KEY_LEFT:
+		isLDown = false;
 		break;
 	case GLUT_KEY_RIGHT:
+		isRDown = false;
 		break;
 	default:
 		break;
@@ -88,8 +84,8 @@ int main(int argc, char** argv) {
 	glutCreateWindow("Breakout! Bat_and_Ball~");
 	init();
 
-	//glutSpecialFunc(MyKeyDown);
-	//glutSpecialUpFunc(MyKeyUp);
+	glutSpecialFunc(MyKeyDown);
+	glutSpecialUpFunc(MyKeyUp);
 	glutKeyboardFunc(MyKey);
 
 	glutReshapeFunc(MyReshape);

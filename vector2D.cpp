@@ -20,7 +20,42 @@ Vector2D::Vector2D(const float* s, const float* e) {
     this->y = e[1] - s[1];
 }
 
-void Vector2D::setVector(float xx, float yy, float zz) {
+void Vector2D::operator=(const Vector2D& v) {
+    x = v.x;
+    y = v.y;
+}
+
+Vector2D Vector2D::operator+(const Vector2D& v) {
+    Vector2D t(x + v.x, y + v.y);
+    return t;
+}
+
+Vector2D Vector2D::operator-(const Vector2D& v) {
+    Vector2D t(x - v.x, y - v.y);
+    return t;
+}
+
+Vector2D Vector2D::operator*(const Vector2D& v) {
+    Vector2D t(x * v.x, y * v.y);
+    return t;
+}
+
+Vector2D Vector2D::operator*(float num) {
+    Vector2D t(x * num, y * num);
+    return t;
+}
+
+Vector2D Vector2D::operator/(const Vector2D& v) {
+    Vector2D t(x / v.x, y / v.y);
+    return t;
+}
+
+Vector2D Vector2D::operator/(float num) {
+    Vector2D t(x / num, y / num);
+    return t;
+}
+
+void Vector2D::setVector(float xx, float yy) {
     x = xx;
     y = yy;
 }
@@ -56,9 +91,9 @@ void Vector2D::normalizer() {
 }
 
 
-void Vector2D::getNormalVector(Vector2D* v) {
-    x = v->y;
-    y = -v->x;
+void Vector2D::getNormalVector(Vector2D v) {
+    x = v.y;
+    y = -v.x;
 }
 
 

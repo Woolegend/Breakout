@@ -11,12 +11,14 @@
 #endif
 
 class Wall {
+public:
 	Vector2D start;
 	Vector2D end;
 	Vector2D direction;
 	Vector2D normal;
 	float length;
-public:
+
+	Wall();
 	Wall(float x1, float y1, float x2, float y2);
 	void setDirection();
 	void setNormal();

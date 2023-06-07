@@ -14,12 +14,13 @@
 #define		BALLSLICE		20
 
 class Ball {
+public:
 	Vector2D center;
 	Vector2D* vertex[BALLSLICE];
-	Vector2D* direction;
+	Vector2D direction;
 	float radius;
 	float speed;
-public:
+
 	Ball(float x, float y);
 	void initVertex();
 	void drawBall();

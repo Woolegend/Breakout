@@ -4,8 +4,8 @@ Ball::Ball(float x, float y) : center(x, y)
 {
 	radius = 10;
 	speed = 5;
-	direction = new Vector2D(1, 1);
-	direction->normalizer();
+	direction.setVector(new Vector2D(2, 4));
+	direction.normalizer();
 	initVertex();
 }
 
@@ -33,7 +33,7 @@ void Ball::drawBall() {
 }
 
 void Ball::update() {
-	center.addVector(direction, speed);
+	center.addVector(&direction, speed);
 }
 
 
@@ -41,12 +41,6 @@ void Ball::drawDirection(){
 	glColor3f(0.0, 1.0, 0.0);
 	glBegin(GL_LINES);
 	glVertex2f(center.x, center.y);
-	glVertex2f(center.x + direction->x * 1000, center.y + direction->y * 1000);
-
-	glVertex2f(center.x, center.y);
-	glVertex2f(center.x + direction->x * 1000, center.y);
-
-	glVertex2f(center.x, center.y);
-	glVertex2f(center.x, center.y + direction->y * 1000);
+	glVertex2f(center.x + direction.x * 1000, center.y + direction.y * 1000);
 	glEnd();
 }

@@ -43,3 +43,5 @@ void Ball::drawDirection(){
     glVertex2f(center.x + direction.x * 1000, center.y + direction.y * 1000);
     glEnd();
 }
+
+

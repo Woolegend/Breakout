@@ -16,7 +16,7 @@ Brick::Brick(int t, float y, float x):type(t) {
     float space = 2;
     durability = 1;
 
-    x = 120 + x * 2 * SCALE;
+    x = 220 + x * 2 * SCALE;
     y = HEIGHTOFVIEW - y * 2 * SCALE;
     center = Vector2D(x, y);
 

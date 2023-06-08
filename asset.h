@@ -11,4 +11,5 @@ class Asset {
 public:
 	void drawBlockA(float x, float y);
 	void drawBlockB(float x, float y);
+	void drawPipe(float x, float y, int l, float a);
 };

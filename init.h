@@ -11,6 +11,6 @@
 #define        RADIUS               10
 
 #define        BRICK_COL            20
-#define        BRICK_ROW            20
+#define        BRICK_ROW            14
 #define        SCALE                20
 

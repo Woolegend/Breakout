@@ -29,8 +29,4 @@ public:
     void getNormalVector(Vector2D v);
     float innerProduct(Vector2D* v);
     void crossProduct(Vector2D* v1, Vector2D* v2);
-    float getCos(Vector2D* v);
-    float getSin(Vector2D* v);
-    float getTan(Vector2D* v);
-    float getAngle(Vector2D* v);
 };

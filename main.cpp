@@ -1,11 +1,11 @@
 #define GL_SILENCE_DEPRECATION
 #ifndef __OPEN_GL_ICL_
 #define __OPEN_GL_ICL_
-#include<OpenGL/OpenGL.h>
-#include<GLUT/GLUT.h>
-//#include<windows.h>
-//#include<GL/GL.h>
-//#include<GL/glut.h>
+//#include<OpenGL/OpenGL.h>
+//#include<GLUT/GLUT.h>
+#include<windows.h>
+#include<GL/GL.h>
+#include<GL/glut.h>
 #endif
 
 #include "object.h"
@@ -29,7 +29,7 @@ void MyReshape(int w, int h) {
 }
 
 void frameReset() {
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.8, 0.8, 0.8, 0.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -39,10 +39,11 @@ void RenderScene(void)
     frameReset();
 
     obj.drawObject();
+    obj.checkCollision();
     obj.updateObject(isLDown, isRDown);
 
 
-    //Sleep(speed);
+    Sleep(3);
 
     glutSwapBuffers();
     glFlush();
@@ -78,9 +79,13 @@ void MyKey(unsigned char key, int x, int y) {
         isPause = isPause ? false : true;
         break;
     case 'a':
+    case 'A':
+    case '¤±':
         if (speed > 2) speed -= 1;
         break;
     case 's':
+    case 'S':
+    case '¤¤':
         if (speed < 10) speed += 1;
         break;
     default:

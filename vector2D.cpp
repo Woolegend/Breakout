@@ -84,32 +84,3 @@ void Vector2D::crossProduct(Vector2D* v1, Vector2D* v2) {
     x = v1->y - v2->y;
     y = v1->x - v2->x;
 }
-
-
-float Vector2D::getCos(Vector2D* v) {
-    float scala_1 = scala();
-    float scala_2 = v->scala();
-    float inner = innerProduct(v);
-    float cos = inner / (scala_1 * scala_2);
-    return cos;
-}
-
-float Vector2D::getSin(Vector2D* v) {
-    float cos = getCos(v);
-    float sin = sqrt(1 - (cos * cos));
-    return sin;
-}
-
-float Vector2D::getTan(Vector2D* v) {
-    float cos = getCos(v);
-    float sin = getSin(v);
-    float tan = sin / cos;
-    return tan;
-}
-
-
-float Vector2D::getAngle(Vector2D* v) {
-    float tan = getTan(v);
-    float angle = atan(tan);
-    return angle;
-}

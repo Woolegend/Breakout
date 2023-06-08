@@ -2,23 +2,23 @@
 #include<ios>
 
 int board[BRICK_COL][BRICK_ROW] = {
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 2, 2, 2, 3, 3, 4, 3, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 2, 3, 2, 3, 3, 3, 4, 3, 3, 3, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 2, 3, 2, 2, 3, 3, 3, 4, 3, 3, 3, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 4, 4, 4, 4, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 1, 5, 1, 1, 5, 1, 1, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 1, 1, 1, 5, 1, 1, 5, 1, 1, 1, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 1, 1, 1, 1, 5, 5, 5, 5, 1, 1, 1, 1, 0, 0, 0, 0},
+    {0, 0, 0, 0, 3, 3, 1, 5, 3, 5, 5, 3, 5, 1, 3, 3, 0, 0, 0, 0},
+    {0, 0, 0, 0, 3, 3, 3, 5, 5, 5, 5, 5, 5, 3, 3, 3, 0, 0, 0, 0},
+    {0, 0, 0, 0, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 5, 5, 5, 0, 0, 5, 5, 5, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -38,39 +38,52 @@ void Object::initObject() {
 
     //init walls
     wall_num = 4;
-    wall[0] = new Wall(0, 1000, 1000, 1000);
-    wall[1] = new Wall(1000, 1000, 1000, 0);
-    wall[2] = new Wall(1000, 0, 0, 0);
-    wall[3] = new Wall(0, 0, 0, 1000);
+    wall[0] = new Wall(40, 1000, 960, 1000);
+    wall[1] = new Wall(960, 1000, 960, 0);
+    wall[2] = new Wall(9600, 0, 40, 0);
+    wall[3] = new Wall(40, 0, 40, 1000);
 
 
     //init Bricks
-    brick_num = 0;
-    for (int h = 0; h < BRICK_COL; h++) {
-        for (int w = 0; w < BRICK_ROW; w++) {
-            if (board[h][w]) brick_num++;
-            brick[h * BRICK_ROW + w] = new Brick(board[h][w], w, h);
+    brick = new Brick**[BRICK_COL];
+    for (int i = 0; i < BRICK_COL; i++) {
+        brick[i] = new Brick*[BRICK_ROW];
+    }
+    for (int i = 0; i < BRICK_COL; i++) {
+        for (int j = 0; j < BRICK_ROW; j++) {
+            if (board[i][j]) {
+                brick[i][j] = new Brick(board[i][j], i, j);
+            }
+            else brick[i][j] = NULL;
         }
     }
 }
 
 void Object::drawObject() {
     ball->drawBall();
-
-    for (int i = 0; i < wall_num; i++) {
-        wall[i]->draw();
-        wall[i]->drawNormal();
-    }
-
-    for (int i = 0; i < brick_num; i++) {
-        if(brick[i]->durability)
-            brick[i]->drawBrick();
+    
+    for (int i = 0; i < BRICK_COL; i++) {
+        for (int j = 0; j < BRICK_ROW; j++) {
+            if (brick[i][j] == NULL)
+                continue;
+            if (brick[i][j]->durability)
+                brick[i][j]->draw();
+        }
     }
     
-    for (int i = 0; i < brick_num; i++) {
-        if(brick[i]->durability)
-            brick[i]->drawBounding();
-        
+    
+    for (int i = 0; i < BRICK_COL; i++) {
+        for (int j = 0; j < BRICK_ROW; j++) {
+            if (brick[i][j] == NULL)
+                continue;
+            if (brick[i][j]->durability)
+                brick[i][j]->drawBounding();
+        }
+    }
+    
+    for (int i = 0; i < 25; i++) {
+        asset.drawBlockA(20, 20 + i * 40);
+        asset.drawBlockA(980, 20 + i * 40);
     }
 }
 
@@ -79,21 +92,158 @@ void Object::updateObject(bool L, bool R) {
     bat->update(L, R);
 }
 
-void Object::wallCollision(int index){
+void Object::checkCollision() {
+    wallCollision();
+    brickCollision();
+}
+
+void Object::wallCollision(){
     Vector2D *l2l, *p2l, *c2l, *col;
     float dis = 10000, tmp;
-    for(int i = 0; i<wall_num; i++){
-        l2l = lineToLine(ball->center, ball->direction * 1000 + ball->center,
-                         wall[index]->start, wall[index]->end);
-        if(l2l == NULL) continue;
-        p2l = pointToLine(ball->center, wall[index]->start, wall[index]->end);
+    int index = 0;
+    for (int i = 0; i < wall_num; i++) {
+        l2l = lineToLine(
+            ball->center,
+            ball->direction * 10000 + ball->center,
+            wall[i]->start,
+            wall[i]->end);
+        if (l2l == NULL) continue;
+        p2l = pointToLine(ball->center, wall[i]->start, wall[i]->end);
         c2l = circleToLine(*l2l, *p2l);
-        tmp = (*c2l - ball->center).scala();
-        if(tmp < dis){
-            tmp = dis;
-            col = pointToLine(*c2l, wall[index]->start, wall[index]->end);
+        col = pointToLine(*c2l, wall[i]->start, wall[i]->end);
+        tmp = (*col - ball->center).scala();
+        if (tmp < dis) {
+            dis = tmp;
+            index = i;      
+            drawIntersection(l2l, p2l, c2l, col);
         }
     }
+    if (dis <= RADIUS) {
+        ball->direction = ball->direction + wall[index]->normal * 2;
+        ball->direction.normalizer();
+    }
+}
+
+void Object::brickCollision() {
+    int c, r;
+    float exc = 70, tmp;
+    Vector2D nVec;
+    for (int i = 1; i < BRICK_COL - 1; i++) {
+        for (int j = 1; j < BRICK_ROW - 1; j++) {
+            // no brick
+            if (brick[i][j] == NULL) continue;
+            // too fal
+            tmp = (ball->center - brick[i][j]->center).scala();
+            // fenced in brick
+            if (tmp > exc) continue;
+            if (brick[i + 1][j] != NULL &&
+                brick[i][j + 1] != NULL &&
+                brick[i - 1][j] != NULL &&
+                brick[i][j - 1] != NULL)
+                continue;
+
+            float
+                cx = ball->center.x,
+                cy = ball->center.y;
+
+            // in bounding box?
+            if (cx >= fmin(brick[i][j]->bvtx[0].x, brick[i][j]->bvtx[1].x) &&
+                cx <= fmax(brick[i][j]->bvtx[0].x, brick[i][j]->bvtx[1].x) &&
+                cy >= fmin(brick[i][j]->bvtx[2].y, brick[i][j]->bvtx[1].y) &&
+                cy <= fmax(brick[i][j]->bvtx[2].y, brick[i][j]->bvtx[1].y)){
+                exc = tmp;
+                c = i;
+                r = j;
+
+                glPointSize(5);
+                glColor3f(1, 1, 1);
+                glBegin(GL_POINTS);
+                glVertex2f(brick[i][j]->center.x, brick[i][j]->center.y);
+                glEnd();
+
+                //up face
+                if (cx >= fmin(brick[i][j]->vtx[0].x, brick[i][j]->vtx[1].x) &&
+                    cx <= fmax(brick[i][j]->vtx[0].x, brick[i][j]->vtx[1].x) &&
+                    cy > brick[i][j]->center.y) {
+                    nVec = Vector2D(0, 1);
+                }
+                else if (cy >= fmin(brick[i][j]->vtx[1].y, brick[i][j]->vtx[2].y) &&
+                    cy <= fmax(brick[i][j]->vtx[1].y, brick[i][j]->vtx[2].y) &&
+                    cx > brick[i][j]->center.x) {
+                    nVec = Vector2D(1, 0);
+                }
+                else if (cx >= fmin(brick[i][j]->vtx[2].x, brick[i][j]->vtx[3].x) &&
+                    cx <= fmax(brick[i][j]->vtx[2].x, brick[i][j]->vtx[3].x) &&
+                    cy < brick[i][j]->center.y) {
+                    nVec = Vector2D(0, -1);
+                }
+                else if (cy >= fmin(brick[i][j]->vtx[3].y, brick[i][j]->vtx[0].y) &&
+                    cy <= fmax(brick[i][j]->vtx[3].y, brick[i][j]->vtx[0].y) &&
+                    cx < brick[i][j]->center.x) {
+                    nVec = Vector2D(-1, 0);
+                }
+                else {
+                    if (cx < brick[i][j]->center.x && cy > brick[i][j]->center.y) {
+                        nVec = Vector2D(-1, 1);
+                        nVec.normalizer();
+                    }
+                    else if (cx > brick[i][j]->center.x && cy > brick[i][j]->center.y) {
+                        nVec = Vector2D(1, 1);
+                        nVec.normalizer();
+                    }
+                    else if (cx > brick[i][j]->center.x && cy < brick[i][j]->center.y) {
+                        nVec = Vector2D(1, -1);
+                        nVec.normalizer();
+                    }
+                    else if (cx < brick[i][j]->center.x && cy < brick[i][j]->center.y) {
+                        nVec = Vector2D(-1, -1);
+                        nVec.normalizer();
+                    }
+                    else {
+                        printf("exc in brick collision !!!!\n");
+                    }
+                }
+            }
+        }
+    }
+    if (exc < 70) {
+        ball->direction = ball->direction + 2 * nVec;
+        ball->direction.normalizer();
+        brick[c][r] = NULL;
+    }
+}
+
+void Object::drawIntersection(Vector2D* l2l, Vector2D* p2l, Vector2D* c2l, Vector2D* col) {
+    glPointSize(5);
+    glColor3f(0, 0, 1);
+    glBegin(GL_POINTS);
+    glVertex2f(l2l->x, l2l->y);
+    glVertex2f(p2l->x, p2l->y);
+    glVertex2f(c2l->x, c2l->y);
+    glVertex2f(col->x, col->y);
+    glEnd();
+
+    glColor3f(0, 1, 0);
+    glBegin(GL_LINES);
+    glVertex2f(ball->center.x, ball->center.y);
+    glVertex2f(l2l->x, l2l->y);
+
+    glVertex2f(ball->center.x, ball->center.y);
+    glVertex2f(p2l->x, p2l->y);
+    glEnd();
+
+    float    delta, theta;
+    float    x, y;
+    delta = 2 * PI / BALLSLICE;
+    glColor3f(1, 0, 0);
+    glBegin(GL_LINE_LOOP);
+    for (int i = 0; i < BALLSLICE; i++) {
+        theta = delta * i;
+        x = RADIUS * cos(theta) + c2l->x;
+        y = RADIUS * sin(theta) + c2l->y;
+        glVertex2f(x, y);
+    } 
+    glEnd();
 }
 
 Vector2D* Object::lineToLine(Vector2D v1, Vector2D v2, Vector2D v3, Vector2D v4) {

@@ -28,7 +28,7 @@ int block_A[16][16] = {
 };
 
 void Asset::drawBlockA(float x, float y) {
-    float scale = 40.0 / 16.0;
+    float scale = SCALE / 16.0;
     glPushMatrix();
     glTranslatef(x, y, 0);
     glTranslatef(-16 / 2 * scale, 16 / 2 * scale, 0);
@@ -73,7 +73,7 @@ int block_B[16][16] = {
 };
 
 void Asset::drawBlockB(float x, float y) {
-    float scale = 40.0 / 16.0;
+    float scale = SCALE / 16.0;
     glPushMatrix();
     glTranslatef(x, y, 0);
     glTranslatef(-16 / 2 * scale, 16 / 2 * scale, 0);
@@ -142,5 +142,52 @@ void Asset::drawPipe(float x, float y, int l, float a) {
         }
     }
     
+    glPopMatrix();
+}
+
+GLfloat c_mush[][3]{
+    {0, 0, 0},
+    {1, 0, 0},
+    {1, 1, 1}
+};
+
+int mush[16][16] = {
+    //-0--1--2--3--4--5--6--7--8--9-10-11-12-13-14-15
+      {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0}, //0
+      {0, 0, 0, 1, 1, 3, 3, 2, 2, 2, 2, 1, 1, 0, 0, 0}, //1
+      {0, 0, 1, 3, 3, 3, 3, 2, 2, 2, 2, 3, 3, 1, 0, 0}, //2
+      {0, 1, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 3, 3, 1, 0}, //3
+      {0, 1, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 1, 0}, //4
+      {1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 2, 2, 2, 1}, //5
+      {1, 2, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 2, 2, 2, 1}, //6
+      {1, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 2, 2, 3, 1}, //7
+      {1, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 1}, //8
+      {1, 2, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 1}, //9
+      {1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 1}, //10
+      {0, 1, 1, 1, 3, 3, 1, 3, 3, 1, 3, 3, 1, 1, 1, 0}, //11
+      {0, 0, 1, 3, 3, 3, 1, 3, 3, 1, 3, 3, 3, 1, 0, 0}, //12
+      {0, 0, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 0, 0}, //13
+      {0, 0, 0, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 0, 0, 0}, //14
+      {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0}  //15
+};
+
+void Asset::drawMush(float x, float y, float a) {
+    float scale = SCALE / 16.0;
+    glPushMatrix();
+    glTranslatef(x, y, 0);
+    glRotatef(1, 0, 0, 1);
+    glTranslatef(-16 / 2 * scale, 16 / 2 * scale, 0);
+    for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 16; j++) {
+            if (mush[i][j] == 0) continue;
+            glColor3fv(c_mush[mush[i][j] - 1]);
+            glBegin(GL_POLYGON);
+            glVertex2f(j * scale, -i * scale);
+            glVertex2f((j + 1) * scale, -i * scale);
+            glVertex2f((j + 1) * scale, -(i + 1) * scale);
+            glVertex2f(j * scale, -(i + 1) * scale);
+            glEnd();
+        }
+    }
     glPopMatrix();
 }

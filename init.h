@@ -1,8 +1,8 @@
 #pragma once
 
 
-#define        WIDTHOFVIEW              1200
-#define        HEIGHTOFVIEW             1000
+#define        WIDTH              900.0
+#define        HEIGHT             900.0
 
 #define        NUMOFWALL            10
 
@@ -12,5 +12,6 @@
 
 #define        BRICK_COL            20
 #define        BRICK_ROW            14
-#define        SCALE                20
+
+#define        SCALE                30.0
 

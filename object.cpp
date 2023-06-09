@@ -29,29 +29,28 @@ Object::Object() {
 }
 
 void Object::initObject() {
-
+    isPlay = false;
+    isOver = false;
+    life = 3;
     //init ball
-    ball = new Ball(300, 50);
-
     //init bat
-    bat = new Bat(300, 35);
+    gameReady();
 
     //init walls
-    wall_num = 10;
-    wall[0] = new Wall(40, 1000, 960, 1000);
-    wall[1] = new Wall(960, 1000, 960, 0);
-    wall[2] = new Wall(960, 0, 40, 0);
-    wall[3] = new Wall(40, 0, 40, 1000);
+    wall[0] = new Wall(SCALE, HEIGHT, WIDTH - SCALE, HEIGHT);
+    wall[1] = new Wall(WIDTH-SCALE, HEIGHT, WIDTH-SCALE, SCALE);
+    wall[2] = new Wall(WIDTH-SCALE, SCALE, SCALE, SCALE);
+    wall[3] = new Wall(SCALE, SCALE, SCALE, HEIGHT);
     
     float co = 32 * sqrt(2);
-    float sz = 130;
+    float sz = 150;
     wall[4] = new Wall(0, 500 - co, sz, 500 - co + sz);
     wall[5] = new Wall(sz, 500 - co + sz, sz - co, 500 + sz);
     wall[6] = new Wall(sz - co, 500 + sz, 0, 500 + co);
     
-    wall[7] = new Wall(1000, 500 + co, 1000 - sz + co, 500 + sz);
-    wall[8] = new Wall(1000 - sz + co, 500 + sz, 1000 - sz, 500 - co + sz);
-    wall[9] = new Wall(1000 - sz, 500 - co + sz, 1000, 500 - co);
+    wall[7] = new Wall(900, 500 + co, 900 - sz + co, 500 + sz);
+    wall[8] = new Wall(900 - sz + co, 500 + sz, 900 - sz, 500 - co + sz);
+    wall[9] = new Wall(900 - sz, 500 - co + sz, 900, 500 - co);
 
     //init Bricks
     brick = new Brick**[BRICK_COL];
@@ -68,8 +67,16 @@ void Object::initObject() {
     }
 }
 
+void Object::gameReady() {
+    isReady = true;
+    ball = new Ball(WIDTH / 2, 80);
+    bat = new Bat(WIDTH / 2, 50);
+}
+
 void Object::drawObject() {
-    ball->drawBall();
+    ball->draw();
+    bat->draw();
+    //bat->drawBounding();
     
     for (int i = 0; i < BRICK_COL; i++) {
         for (int j = 0; j < BRICK_ROW; j++) {
@@ -83,42 +90,68 @@ void Object::drawObject() {
 
 
     asset.drawPipe(0, 500, 30, -45);
-    asset.drawPipe(1000, 500, 30, 45);
+    asset.drawPipe(900, 500, 30, 45);
 
-    glLineWidth(10);
-    for (int i = 0; i < wall_num; i++) {
+    for (int i = 0; i < life; i++) {
+        asset.drawMush((i + 1 + 0.5) * SCALE, HEIGHT - SCALE * 0.5, 0);
+    }
+
+    /*
+    for (int i = 0; i < NUMOFWALL; i++) {
         wall[i]->draw();
         wall[i]->drawNormal();
     }
-    glLineWidth(1);
+    */
 
     
-    for (int i = 0; i < 25; i++) {
-        asset.drawBlockB(20, 20 + i * 40);
-        asset.drawBlockB(980, 20 + i * 40);
+    for (int i = 0; i < 30; i++) {
+        asset.drawBlockB(15, 15 + i * SCALE);
+        asset.drawBlockB(885, 15 + i * SCALE);
+        asset.drawBlockB(15 + i * SCALE, 15);
     }
 
    
 }
 
-
-void Object::updateObject(bool L, bool R) {
-    ball->update();
-    bat->update(L, R);
+void Object::updateObject(bool L, bool R, bool S) {
+    if (isPlay) {
+        if (S) return;
+        ball->update();
+        bat->update(L, R);
+        return;
+    }
+    if (isReady) {
+        if (S) {
+            isReady = false;
+            isPlay = true;
+        }
+        return;
+    }
+    else {
+        if (life != 0) {
+            if (S) gameReady();
+            return;
+        }
+        if (life == 0) {
+            isOver == true;
+            printf("gameover!!!\n");
+            return;
+        }
+    }
 }
-
 
 void Object::checkCollision() {
+    if (!isPlay) return;
     wallCollision();
     brickCollision();
+    batCollision();
 }
 
-
 void Object::wallCollision(){
-    Vector2D *l2l, *p2l, *c2l, *col;
+    Vector2D *l2l = NULL, *p2l = NULL, *c2l = NULL, *col = NULL;
     float dis = 10000, tmp;
     int index = 0;
-    for (int i = 0; i < wall_num; i++) {
+    for (int i = 0; i < NUMOFWALL; i++) {
         l2l = lineToLine(
             ball->center,
             ball->direction * 10000 + ball->center,
@@ -132,10 +165,16 @@ void Object::wallCollision(){
         if (tmp < dis) {
             dis = tmp;
             index = i;
-            drawIntersection(l2l, p2l, c2l, col);
+            //drawIntersection(l2l, p2l, c2l, col);
         }
     }
+
     if (dis <= RADIUS) {
+        if (index == 2) {
+            isPlay = false;
+            life--;
+            return;
+        }
         ball->direction = ball->direction + wall[index]->normal * 2;
         ball->direction.normalizer();
     }
@@ -227,6 +266,23 @@ void Object::brickCollision() {
         ball->direction = ball->direction + 2 * nVec;
         ball->direction.normalizer();
         brick[c][r] = NULL;
+    }
+}
+
+void Object::batCollision() {
+    if (ball->center.y > (bat->center.y + bat->h + 10)) return;
+
+
+    float cx = ball->center.x, cy = ball->center.y;
+    if (cx >= bat->bvtx[0].x && cx <= bat->bvtx[1].x &&
+        cy >= bat->bvtx[2].y && cy <= bat->bvtx[1].y) {
+        Vector2D nVec;
+        nVec = ball->center - bat->center;
+        nVec.normalizer();
+
+        ball->direction = ball->direction + 2 * nVec * Vector2D(0.5, 2);
+
+        ball->direction.normalizer();
     }
 }
 

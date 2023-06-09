@@ -7,9 +7,12 @@
 #include<GL/glut.h>
 #endif
 
+#include "init.h"
+
 class Asset {
 public:
 	void drawBlockA(float x, float y);
 	void drawBlockB(float x, float y);
 	void drawPipe(float x, float y, int l, float a);
+	void drawMush(float x, float y, float a);
 };

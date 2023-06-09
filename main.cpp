@@ -11,21 +11,19 @@
 #include "object.h"
 
 Object obj;
-bool isPause, isLDown, isRDown;
-int speed;
+bool clickSpace, isLDown, isRDown;
 
 void init() {
-    isPause = false;
+    clickSpace = false;
     isLDown = false;
     isRDown = false;
-    speed = 5;
 }
 
 void MyReshape(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(0, WIDTHOFVIEW, 0, HEIGHTOFVIEW);
+    gluOrtho2D(0, WIDTH, 0, HEIGHT);
 }
 
 void frameReset() {
@@ -35,12 +33,11 @@ void frameReset() {
 
 void RenderScene(void)
 {
-    if (isPause) return;
     frameReset();
 
     obj.drawObject();
     obj.checkCollision();
-    obj.updateObject(isLDown, isRDown);
+    obj.updateObject(isLDown, isRDown, clickSpace);
 
 
     Sleep(3);
@@ -76,17 +73,13 @@ void MyKeyUp(int key, int x, int y) {
 void MyKey(unsigned char key, int x, int y) {
     switch (key) {
     case ' ':
-        isPause = isPause ? false : true;
+        clickSpace = clickSpace ? false : true;
         break;
     case 'a':
     case 'A':
-    case '¤±':
-        if (speed > 2) speed -= 1;
         break;
     case 's':
     case 'S':
-    case '¤¤':
-        if (speed < 10) speed += 1;
         break;
     default:
         break;
@@ -97,7 +90,7 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitWindowPosition(100, 100);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
-    glutInitWindowSize(WIDTHOFVIEW, HEIGHTOFVIEW);
+    glutInitWindowSize(WIDTH, HEIGHT);
     glutCreateWindow("Breakout! Bat_and_Ball~");
     init();
 

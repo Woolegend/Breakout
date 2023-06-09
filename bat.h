@@ -14,16 +14,19 @@
 #include "vector2D.h"
 #endif
 
+#include "init.h"
+
 #define        LEFT            1
 #define        RIGHT            2
 
 class Bat {
 public:
     float speed, w, h;
-    Vector2D center, vtx[4];
+    Vector2D center, vtx[4], bvtx[4];
 
     Bat(float x, float y);
 
-    void drawBat();
+    void draw();
+    void drawBounding();
     void update(bool L, bool R);
 };

@@ -8,8 +8,6 @@
 #include<GL/glut.h>
 #endif
 
-
-
 #ifndef __BALL_H_
 #define __BALL_H_
 #include "ball.h"
@@ -48,16 +46,19 @@ class Object {
     Wall* wall[NUMOFWALL];
     Brick*** brick;
     Asset asset;
-    int brick_num, wall_num;
+    int life, brick_num;
     float col_dis;
+    bool isPlay, isReady, isOver;
 public:
     Object();
     void initObject();
+    void gameReady();
     void drawObject();
-    void updateObject(bool L, bool R);
+    void updateObject(bool L, bool R, bool S);
     void checkCollision();
     void wallCollision();
     void brickCollision();
+    void batCollision();
     void drawIntersection(Vector2D* l2l, Vector2D* p2l, Vector2D *c2l, Vector2D *col);
     Vector2D* lineToLine(Vector2D v1, Vector2D v2, Vector2D v3, Vector2D v4);
     Vector2D* pointToLine(Vector2D c, Vector2D v1, Vector2D v2);

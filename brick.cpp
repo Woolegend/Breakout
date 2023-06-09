@@ -1,7 +1,7 @@
 #include "brick.h"
 #include<ios>
 
-float color[8][3] = {
+float brick_color[8][3] = {
     {235.0 / 255.0, 51.0 / 255.0, 35.0 / 255.0},
     {136.0 / 255.0, 97.0 / 255.0, 45.0 / 255.0},
     {234.0 / 255.0, 195.0 / 255.0, 81.0 / 255.0},
@@ -12,18 +12,21 @@ float color[8][3] = {
     {0, 0, 0}
 };
 
-Brick::Brick(int t, float y, float x):type(t) {
+Brick::Brick(int t, float y, float x):type(t){
     float space = 2;
+    float hfScale = SCALE / 2;
     durability = 1;
+    color = type - 1;
+    
 
-    x = 220 + x * 2 * SCALE;
-    y = HEIGHTOFVIEW - y * 2 * SCALE;
+    x = (WIDTH - BRICK_ROW * SCALE) / 2  + x * SCALE;
+    y = HEIGHT - hfScale - y * SCALE;
     center = Vector2D(x, y);
 
-    vtx[0] = Vector2D(x  - SCALE + space, y  - SCALE + space);
-    vtx[1] = Vector2D(x  + SCALE - space, y  - SCALE + space);
-    vtx[2] = Vector2D(x  + SCALE - space, y  + SCALE - space);
-    vtx[3] = Vector2D(x  - SCALE + space, y  + SCALE - space);
+    vtx[0] = Vector2D(x  - hfScale + space, y  - hfScale + space);
+    vtx[1] = Vector2D(x  + hfScale - space, y  - hfScale + space);
+    vtx[2] = Vector2D(x  + hfScale - space, y  + hfScale - space);
+    vtx[3] = Vector2D(x  - hfScale + space, y  + hfScale - space);
     
     bvtx[0] = vtx[0] + Vector2D(-RADIUS, -RADIUS);
     bvtx[1] = vtx[1] + Vector2D(+RADIUS, -RADIUS);
@@ -33,7 +36,7 @@ Brick::Brick(int t, float y, float x):type(t) {
 
 void Brick::draw() {
     glBegin(GL_POLYGON);
-    glColor3fv(color[type -1]);
+    glColor3fv(brick_color[color]);
     glVertex2f(vtx[0].x, vtx[0].y);
     glVertex2f(vtx[1].x, vtx[1].y);
     glVertex2f(vtx[2].x, vtx[2].y);

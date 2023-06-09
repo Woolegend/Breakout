@@ -20,7 +20,7 @@ void Ball::initVertex() {
     }
 }
 
-void Ball::drawBall() {
+void Ball::draw() {
     glPushMatrix();
     glTranslatef(center.x, center.y, 0);
     glBegin(GL_POLYGON);

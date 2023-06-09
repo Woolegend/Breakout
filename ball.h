@@ -26,7 +26,7 @@ public:
 
     Ball(float x, float y);
     void initVertex();
-    void drawBall();
+    void draw();
     void update();
     void drawDirection();
 };

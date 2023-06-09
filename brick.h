@@ -13,6 +13,11 @@
 #include "vector2D.h"
 #endif
 
+#ifndef __ASSET_H_
+#define __ASSET_H_
+#include "asset.h"
+#endif
+
 #include "init.h"
 
 #define        EMPTY            0;
@@ -20,7 +25,7 @@
 
 class Brick {
 public:
-    int type, durability;
+    int type, color, durability;
     Vector2D center, vtx[4], bvtx[4];
 
     Brick(int t, float x, float y);

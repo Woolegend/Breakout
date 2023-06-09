@@ -42,16 +42,16 @@ void Object::initObject() {
     wall[1] = new Wall(960, 1000, 960, 0);
     wall[2] = new Wall(960, 0, 40, 0);
     wall[3] = new Wall(40, 0, 40, 1000);
-
-    wall[4] = new Wall(40, 500 + 32, 108, 600);
-    wall[5] = new Wall(108, 600, 140, 600 - 32);
-    wall[6] = new Wall(140, 600 - 32, 40, 500-32);
-
-    wall[7] = new Wall(960, 500 + 32, 828, 600);
-    wall[8] = new Wall(828, 600, 860, 600 + 32);
-    wall[9] = new Wall(860, 600 + 32, 960, 500 - 32);
     
-
+    float co = 32 * sqrt(2);
+    float sz = 130;
+    wall[4] = new Wall(0, 500 - co, sz, 500 - co + sz);
+    wall[5] = new Wall(sz, 500 - co + sz, sz - co, 500 + sz);
+    wall[6] = new Wall(sz - co, 500 + sz, 0, 500 + co);
+    
+    wall[7] = new Wall(1000, 500 + co, 1000 - sz + co, 500 + sz);
+    wall[8] = new Wall(1000 - sz + co, 500 + sz, 1000 - sz, 500 - co + sz);
+    wall[9] = new Wall(1000 - sz, 500 - co + sz, 1000, 500 - co);
 
     //init Bricks
     brick = new Brick**[BRICK_COL];
@@ -82,12 +82,16 @@ void Object::drawObject() {
 
 
 
-    asset.drawPipe(20, 500, 30, -45);
+    asset.drawPipe(0, 500, 30, -45);
     asset.drawPipe(1000, 500, 30, 45);
 
+    glLineWidth(10);
     for (int i = 0; i < wall_num; i++) {
         wall[i]->draw();
+        wall[i]->drawNormal();
     }
+    glLineWidth(1);
+
     
     for (int i = 0; i < 25; i++) {
         asset.drawBlockB(20, 20 + i * 40);
@@ -97,15 +101,18 @@ void Object::drawObject() {
    
 }
 
+
 void Object::updateObject(bool L, bool R) {
     ball->update();
     bat->update(L, R);
 }
 
+
 void Object::checkCollision() {
     wallCollision();
     brickCollision();
 }
+
 
 void Object::wallCollision(){
     Vector2D *l2l, *p2l, *c2l, *col;
@@ -124,7 +131,7 @@ void Object::wallCollision(){
         tmp = (*col - ball->center).scala();
         if (tmp < dis) {
             dis = tmp;
-            index = i;      
+            index = i;
             drawIntersection(l2l, p2l, c2l, col);
         }
     }
@@ -252,7 +259,7 @@ void Object::drawIntersection(Vector2D* l2l, Vector2D* p2l, Vector2D* c2l, Vecto
         x = RADIUS * cos(theta) + c2l->x;
         y = RADIUS * sin(theta) + c2l->y;
         glVertex2f(x, y);
-    } 
+    }
     glEnd();
 }
 

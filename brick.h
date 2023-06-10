@@ -22,7 +22,7 @@
 
 class Brick {
 public:
-    int type, color, item, durability;
+    int type, color, item, durability, coin_time;
     float angle;
     Vector2D center, vtx[4], bvtx[4], gravity;
     Asset asset;

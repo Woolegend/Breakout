@@ -46,7 +46,7 @@ class Object {
     Wall* wall[NUMOFWALL];
     Brick*** brick;
     Asset asset;
-    int life, brick_num, pipe_time;
+    int life, brick_num, coin, pipe_time;
     float col_dis, pipe_angle;
     bool isPlay, isReady, isOver, isPause;
 public:

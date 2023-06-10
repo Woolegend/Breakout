@@ -22,7 +22,7 @@ int board[BRICK_COL][BRICK_ROW] = {
 	{0, 6, 6, 6, 8, 8, 6, 6, 6, 8, 3, 3, 3, 3, 3, 8 ,6, 5, 0, 0},
 	{0, 0, 6, 6, 8 ,6, 6, 6, 6, 8, 6, 6, 6, 6, 8, 6, 6, 0, 0, 0},
 	{0, 0, 0, 6, 8, 6, 6, 6, 6, 8, 8, 3, 3, 8, 6, 6, 6, 0, 0, 0},
-	{0, 0, 0, 0, 0, 6, 5, M, 5, S, 0, 0, 0, 6, 6, S, 5, 6, 5, 0},
+	{0, 0, 0, 0, 0, 6, 5, M, 5, F, 0, 0, 0, 6, 6, S, 5, 6, 5, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
 };
@@ -33,10 +33,10 @@ Object::Object() {
 }
 
 void Object::initObject() {
-
 	isPlay = false;
 	isOver = false;
 	isPause = false;
+	coin = 0;
 	life = 3;
 	brick_num = 0;
 
@@ -135,13 +135,18 @@ void Object::drawObject() {
 	for (int i = 0; i < life; i++) {
 		asset.drawMush((i + 1 + 0.5) * SCALE, HEIGHT - SCALE * 0.5, 0);
 	}
-
+	
 	//벽면 그리기
 	for (int i = 0; i < 30; i++) {
 		asset.drawBlockB(15, 15 + i * SCALE);
 		asset.drawBlockB(885, 15 + i * SCALE);
 		asset.drawBlockB(15 + i * SCALE, 15);
 	}
+
+	asset.drawCoin(760, 880);
+	asset.drawNumber(790, 883, coin/100);
+	asset.drawNumber(820, 883, coin%100/10);
+	asset.drawNumber(850, 883, coin%10);
 }
 
 void Object::updateObject(bool l, bool r, bool s) {
@@ -149,7 +154,8 @@ void Object::updateObject(bool l, bool r, bool s) {
 	if (isPlay) {
 		if (s) {
 			isPlay = false;
-			isPause = true;
+			isReady = false;
+			life--;
 			return;
 		}
 		ball->update();
@@ -381,6 +387,7 @@ void Object::brickCollision() {
 			if (brick[c][r]->type == BRICK_NORMAL) {
 				brick_num--;
 				brick[c][r]->collision();
+				coin++;
 			}
 			// 아이템 박스
 			else if (brick[c][r]->type == BRICK_ITEMBOX) {
@@ -418,6 +425,9 @@ void Object::itemCollision(int c, int r) {
 		&& cy >= bat->bvtx[2].y && cy <= bat->bvtx[1].y) {
 		if (brick[c][r]->item == ITEM_MUSH) {
 			life++;
+		}
+		if (brick[c][r]->item == ITEM_FLOWER) {
+			ball->setType(BALL_FLOWER);
 		}
 		if (brick[c][r]->item == ITEM_STAR) {
 			ball->setType(BALL_STAR);

@@ -15,7 +15,8 @@
 #define        RADIUS               10
 
 #define			BALL_NORMAL				0
-#define			BALL_STAR				1
+#define			BALL_FLOWER				1
+#define			BALL_STAR				2
 
 
 
@@ -34,6 +35,7 @@
 #define			BRICK_NORMAL			0
 #define			BRICK_ITEMBOX			1
 #define			BRICK_ITEM				2
+#define			BRICK_COIN				3
  
 #define			ITEM_NONE				0
 #define			ITEM_MUSH				-1

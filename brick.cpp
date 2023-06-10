@@ -70,6 +70,9 @@ void Brick::draw() {
         if (item == ITEM_MUSH) {
             asset.drawMush(center.x, center.y, angle);  
         }
+        if (item == ITEM_FLOWER) {
+            asset.drawFlower(center.x, center.y, angle);
+        }
         if (item == ITEM_STAR) {
             asset.drawStar(center.x, center.y, angle);
         }
@@ -77,8 +80,18 @@ void Brick::draw() {
         gravity.y -= 0.05;
         angle += 1;
         init();
+        return; 
+    }
+    if (type == BRICK_COIN) {
+        if (coin_time == 0) {
+            delete[] this;
+            return;
+        }
+        coin_time--;
+        asset.drawCoin(center.x, center.y);
+        center = center + gravity;
+        gravity.y -= 0.05;
         return;
-        
     }
 }
 
@@ -101,7 +114,10 @@ void Brick::collision() {
             return;
         }
         else {
-            delete[] this;
+            type = BRICK_COIN;
+            coin_time = 30;
+            gravity = Vector2D(0, 3);
+            return;
         }
     }
     return;

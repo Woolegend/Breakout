@@ -20,17 +20,17 @@
 
 #include "init.h"
 
-#define        EMPTY            0;
-#define        NORMAL            1;
-
 class Brick {
 public:
-    int type, color, durability;
-    Vector2D center, vtx[4], bvtx[4];
+    int type, color, item, durability;
+    float angle;
+    Vector2D center, vtx[4], bvtx[4], gravity;
     Asset asset;
 
     Brick(int t, float x, float y);
 
+    void init();
     void draw();
     void drawBounding();
+    void collision();
 };

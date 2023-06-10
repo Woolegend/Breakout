@@ -1,4 +1,5 @@
 #include "ball.h"
+#include<ios>
 
 Ball::Ball(float x, float y) : center(x, y)
 {

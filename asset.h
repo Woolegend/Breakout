@@ -15,4 +15,5 @@ public:
 	void drawBlockB(float x, float y);
 	void drawPipe(float x, float y, int l, float a);
 	void drawMush(float x, float y, float a);
+	void drawStar(float x, float y, float a);
 };

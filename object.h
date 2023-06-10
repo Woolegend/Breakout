@@ -59,6 +59,7 @@ public:
     void wallCollision();
     void brickCollision();
     void batCollision();
+    void itemCollision(int c, int r);
     void drawIntersection(Vector2D* l2l, Vector2D* p2l, Vector2D *c2l, Vector2D *col);
     Vector2D* lineToLine(Vector2D v1, Vector2D v2, Vector2D v3, Vector2D v4);
     Vector2D* pointToLine(Vector2D c, Vector2D v1, Vector2D v2);

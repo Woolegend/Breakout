@@ -46,15 +46,15 @@ class Object {
     Wall* wall[NUMOFWALL];
     Brick*** brick;
     Asset asset;
-    int life, brick_num;
-    float col_dis;
+    int life, brick_num, pipe_time;
+    float col_dis, pipe_angle;
     bool isPlay, isReady, isOver, isPause;
 public:
     Object();
     void initObject();
     void gameReady();
     void drawObject();
-    void updateObject(bool L, bool R, bool S);
+    void updateObject(bool l, bool r, bool s);
     void checkCollision();
     void wallCollision();
     void brickCollision();

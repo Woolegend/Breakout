@@ -4,7 +4,7 @@
 #define        WIDTH              900.0
 #define        HEIGHT             900.0
 
-#define        NUMOFWALL            10
+#define        NUMOFWALL            14
 
 
 #define        SCALE                30.0
@@ -20,7 +20,7 @@
 
 
 #define			BRICK_COL				20
-#define			BRICK_ROW				16
+#define			BRICK_ROW				20
 
 #define			BRICK_LEFT_TOP			0
 #define			BRICK_TOP				1
@@ -36,6 +36,9 @@
 #define			BRICK_ITEM				2
  
 #define			ITEM_NONE				0
-#define			ITEM_MUSH				1
-#define			ITEM_FLOWER				2
-#define			ITEM_STAR				3
+#define			ITEM_MUSH				-1
+#define			M						-1
+#define			ITEM_FLOWER				-2
+#define			F						-2
+#define			ITEM_STAR				-3
+#define			S						-3

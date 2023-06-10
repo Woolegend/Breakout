@@ -15,6 +15,11 @@
 #include "vector2D.h"
 #endif
 
+#ifndef __ASSET_H_
+#define __ASSET_H_
+#include "asset.h"
+#endif
+
 #include "init.h"
 
 class Ball {
@@ -22,6 +27,7 @@ public:
     Vector2D center;
     Vector2D* vertex[BALLSLICE];
     Vector2D direction;
+    Asset asset;
     int type, time;
     float speed;
 

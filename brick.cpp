@@ -2,21 +2,24 @@
 #include<ios>
 
 float brick_color[][3] = {
-    {235.0 / 255.0, 51.0 / 255.0, 35.0 / 255.0},
-    {136.0 / 255.0, 97.0 / 255.0, 45.0 / 255.0},
-    {234.0 / 255.0, 195.0 / 255.0, 81.0 / 255.0},
-    {0, 0, 0},
-    {0, 29.0 / 255.0, 245.0 / 255.0}
+    {240.0 / 255.0, 82.0 / 255.0, 71.0 / 255.0},
+    {156.0 / 255.0, 40.0 / 255.0, 41.0 / 255.0},
+    {240.0 / 255.0, 245.0 / 255.0, 178.0 / 255.0},
+    {41.0 / 255.0, 171.0 / 255.0, 45.0 / 255.0},
+    {1, 1, 1},
+    {255 / 255.0, 201 / 255.0, 36 / 255.0},
+    {94.0 / 255.0, 93.0 / 255.0, 101.0 / 255.0},
+    {188.0 / 255.0, 139.0 / 255.0, 70.0 / 255.0}
 };
 
 Brick::Brick(int t, float y, float x){
     angle = 0;
     durability = 1;
-    if (t > 5) {
+    if (t < 0) {
         type = BRICK_ITEMBOX;
-        if (t == 6) item = ITEM_MUSH;
-        else if (t == 7) item = ITEM_FLOWER;
-        else if (t == 8) item = ITEM_STAR;
+        if (t == M) item = ITEM_MUSH;
+        else if (t == F) item = ITEM_FLOWER;
+        else if (t == S) item = ITEM_STAR;
         color = -1;
     }
     else {
@@ -71,7 +74,7 @@ void Brick::draw() {
             asset.drawStar(center.x, center.y, angle);
         }
         center = center + gravity;
-        gravity.y -= 0.005;
+        gravity.y -= 0.05;
         angle += 1;
         init();
         return;
@@ -94,7 +97,7 @@ void Brick::collision() {
     if (durability < 1) {
         if (item != ITEM_NONE) {
             type = BRICK_ITEM;
-            gravity = Vector2D(0, 1);
+            gravity = Vector2D(0, 3);
             return;
         }
         else {

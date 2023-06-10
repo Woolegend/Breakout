@@ -16,4 +16,5 @@ public:
 	void drawPipe(float x, float y, int l, float a);
 	void drawMush(float x, float y, float a);
 	void drawStar(float x, float y, float a);
+	void drawMarioIdle(float x, float y, float a);
 };

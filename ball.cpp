@@ -24,8 +24,10 @@ void Ball::initVertex() {
 }
 
 void Ball::draw() {
-    glPushMatrix();
-    glTranslatef(center.x, center.y, 0);
+    //glPushMatrix();
+    //glTranslatef(center.x, center.y, 0);
+    asset.drawMarioIdle(center.x, center.y, 0);
+    /*
     glBegin(GL_POLYGON);
     if (type == BALL_STAR) glColor3f(1.0, 0.0, 0.0);
     else glColor3f(1.0, 1.0, 0.0);
@@ -33,6 +35,7 @@ void Ball::draw() {
         glVertex2f(vertex[i]->x, vertex[i]->y);
     glEnd();
     glPopMatrix();
+    */
 }
 
 void Ball::update() {

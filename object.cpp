@@ -4,69 +4,71 @@
 //마리오 게임 보드
 int board[BRICK_COL][BRICK_ROW] = {
 	// 모서리 인덱스는 0으로 고정
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
-	{0, 0, 0, 0, 2, 2, 2, 3, 3, 4, 3, 0, 0, 0, 0, 0},
-	{0, 0, 0, 2, 3, 2, 3, 3, 3, 4, 3, 3, 3, 0, 0, 0},
-	{0, 0, 0, 2, 3, 2, 2, 3, 3, 3, 4, 3, 3, 3, 0, 0},
-	{0, 0, 0, 0, 2, 3, 3, 3, 3, 4, 4, 4, 4, 0, 0, 0},
-	{0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 1, 1, 5, 1, 1, 5, 1, 1, 0, 0, 0, 0},
-	{0, 0, 0, 1, 1, 1, 5, 1, 1, 5, 1, 1, 1, 0, 0, 0},
-	{0, 0, 1, 1, 1, 1, 5, 5, 5, 5, 1, 1, 1, 1, 0, 0},
-	{0, 0, 3, 3, 1, 5, 6, 5, 5, 6, 5, 1, 3, 3, 0, 0},
-	{0, 0, 3, 3, 3, 5, 5, 5, 5, 5, 5, 3, 3, 3, 0, 0},
-	{0, 0, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 0, 0},
-	{0, 0, 0, 0, 5, 5, 5, 0, 0, 5, 5, 5, 0, 0, 0, 0},
-	{0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0},
-	{0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 6, 8, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 1, 2, 1, 1, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 3, 2, 1, 2, 1, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 3, 3, 4, 1, 3, 1, 1, 4, 4, 1, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 1, 1, 4, 4, 3, 3, 1, 1, 1, 4, 0 ,0, 0, 0},
+	{0, 0, 0, 0, 3, 4, 4, 5, 5, 4, 4, 4, 4, 5, 2, 1, 3, 3, 0, 0},
+	{0, 0, 0, 0, 3, 3, 5, 6, 7, 4, 3, 3, 4, 4, 4, 3, 3, 7, 3, 0},
+	{0, 0, 0, 0, 1, 7, 6, 6, 7, 4, 3, 1, 3, 3, 3, 3, 3, 3, 3, 0},
+	{0, 0, 0, 0, 6, 7, 7, 6, 7, 7, 3, 3, 1, 5, 1, 5, 1, 5, 0, 0},
+	{0, 0, 0, 7, 6, 6, 7, 7, 8, 7, 7, 3, 3, 3, 3, 3, 3, 0, 0, 0},
+	{0, 0, 6, 7, 7, 6, 6, 8, 8, 8, 7, 7, 7, 7, 7, 7, 6, 7, 0, 0},
+	{0, 0, 6, 6, 7, 7, 8, 8, 6, 3, 3, 3, 3, 3, 3, 6, 7, 7, 0, 0},
+	{0, 0, 5, 6, 6, 6, 5, 6, 6, 3, 3, 3, 3, 3, 3, 7, 7, 6, 6, 0},
+	{0, 6, 0, 5, 6, 5, 8, 8, 8, 6, 6, 6, 6, 6, 6, 8, 6, 6, 5 ,0},
+	{0, 6, 6, 6, 8, 8, 6, 6, 6, 8, 3, 3, 3, 3, 3, 8 ,6, 5, 0, 0},
+	{0, 0, 6, 6, 8 ,6, 6, 6, 6, 8, 6, 6, 6, 6, 8, 6, 6, 0, 0, 0},
+	{0, 0, 0, 6, 8, 6, 6, 6, 6, 8, 8, 3, 3, 8, 6, 6, 6, 0, 0, 0},
+	{0, 0, 0, 0, 0, 6, 5, M, 5, S, 0, 0, 0, 6, 6, S, 5, 6, 5, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+
 };
 
-// 오브젝트 생성자
-// 게임 상태를 [준비 단계]로 전환
-// 각종 오브젝트들 생성
 Object::Object() {
 	gameReady();
 	initObject();
 }
 
-// 각종 오브젝트들 생성
 void Object::initObject() {
 
-	//게임 단계 초기화
 	isPlay = false;
 	isOver = false;
 	isPause = false;
-	//목숨 개수 초기화
 	life = 3;
-	//일반 벽돌 개수를 저장할 변수
 	brick_num = 0;
 
-	//벽면 생성
-	//사방을 둘러 싼 4개의 벽면 생성
 	wall[0] = new Wall(SCALE, HEIGHT, WIDTH - SCALE, HEIGHT);
 	wall[1] = new Wall(WIDTH - SCALE, HEIGHT, WIDTH - SCALE, SCALE);
 	wall[2] = new Wall(WIDTH - SCALE, SCALE, SCALE, SCALE);
 	wall[3] = new Wall(SCALE, SCALE, SCALE, HEIGHT);
 
-	//사선으로 기울어진 파이프의 벽면
-	float co = 32 * sqrt(2); // 기울기 가중
-	float sz = 150;			 // 파이프의 사이즈
-	// 좌측 파이프 생성
-	wall[4] = new Wall(0, 500 - co, sz, 500 - co + sz);
-	wall[5] = new Wall(sz, 500 - co + sz, sz - co, 500 + sz);
-	wall[6] = new Wall(sz - co, 500 + sz, 0, 500 + co);
-	// 우측 파이프 생성
-	wall[7] = new Wall(900, 500 + co, 900 - sz + co, 500 + sz);
-	wall[8] = new Wall(900 - sz + co, 500 + sz, 900 - sz, 500 - co + sz);
-	wall[9] = new Wall(900 - sz, 500 - co + sz, 900, 500 - co);
+	float co = 32 * sqrt(2);
+	float sz = 100;	
+	float jp = 16;
+	// 좌측 상단 파이프 생성
+	wall[4] = new Wall(co + sz, 900 - sz, co, 900);
+	wall[5] = new Wall(0, 900 - co, sz, 900 - sz - co);
+	wall[6] = new Wall(sz - jp, 900 - sz - co + jp, co + sz - jp, 900 - sz + jp);
+	// 우측 상단 파이프 생성
+	wall[7] = new Wall(900 - co, 900, 900 - co - sz, 900 - sz);
+	wall[8] = new Wall(900 - sz, 900 - co - sz, 900, 900 - co);
+	wall[9] = new Wall(900 - co - sz + jp, 900 - sz + jp, 900 - sz + jp, 900 - co - sz + jp);
 
-	// 벽돌 생성
-	// 벽돌을 저장할 배열 동적 할당
+
+	sz = 80;
+	jp = 64;
+	// 좌측 하단 파이프 생성
+	wall[10] = new Wall(sz, 450 + co - sz, 0, 450 + co);
+	wall[11] = new Wall(sz - jp, 450 - sz - co + jp, co + sz - jp, 450 - sz + jp);
+
+	// 우측 하단 파이프 생성
+	wall[12] = new Wall(900, 450 + co, 900 - sz, 450 + co - sz);
+	wall[13] = new Wall(900 - co - sz + jp, 450 - sz + jp, 900 - sz + jp, 450 - co - sz + jp);
+
+
 	brick = new Brick * *[BRICK_COL];
 	for (int i = 0; i < BRICK_COL; i++) {
 		brick[i] = new Brick * [BRICK_ROW];
@@ -75,7 +77,7 @@ void Object::initObject() {
 	// board[i][j] = N
 	// N = 0		: 빈 공간
 	// N = 1 ~ 5	: 일반 벽돌 
-	// N = 6		: 아이템 박스
+	// N = 6 ~ 8	: 아이템 박스
 	for (int i = 0; i < BRICK_COL; i++) {
 		for (int j = 0; j < BRICK_ROW; j++) {
 			if (board[i][j]) {
@@ -92,9 +94,9 @@ void Object::initObject() {
 void Object::gameReady() {
 	isReady = true;
 	// 공 위치 초기화
-	ball = new Ball(WIDTH / 2, 100);
+	ball = new Ball(WIDTH / 2, 150);
 	// 배트 위치 초기화
-	bat = new Bat(WIDTH / 2, 60);
+	bat = new Bat(WIDTH / 2, 50);
 }
 
 // 생성된 오브젝트 그리기
@@ -103,8 +105,16 @@ void Object::drawObject() {
 	//공 그리기
 	ball->draw();
 	//배트 그리기
-	bat->draw();
 	bat->drawBounding();
+	if (pipe_time) {
+		asset.drawPipe(
+			bat->center.x, 
+			bat->center.y, 
+			pipe_time / 5, 
+			pipe_angle);
+		pipe_time--;
+	}
+	bat->draw();
 
 	//벽돌 그리기
 	for (int i = 0; i < BRICK_COL; i++) {
@@ -112,50 +122,42 @@ void Object::drawObject() {
 			if (brick[i][j] == NULL)
 				continue;
 			brick[i][j]->draw();
-			brick[i][j]->drawBounding();
 		}
 	}
 
 	//사선 파이프 그리기
-	asset.drawPipe(0, 500, 30, -45);
-	asset.drawPipe(900, 500, 30, 45);
+	asset.drawPipe(0, 900, 30, -135);
+	asset.drawPipe(900, 900, 30, 135);
+	asset.drawPipe(0, 450, 10, -135);
+	asset.drawPipe(900, 450, 10, 135);
 
 	//목숨 개수 그리기
 	for (int i = 0; i < life; i++) {
 		asset.drawMush((i + 1 + 0.5) * SCALE, HEIGHT - SCALE * 0.5, 0);
 	}
 
-	/*
-	for (int i = 0; i < NUMOFWALL; i++) {
-		wall[i]->draw();
-		wall[i]->drawNormal();
-	}
-	*/
-	
 	//벽면 그리기
 	for (int i = 0; i < 30; i++) {
 		asset.drawBlockB(15, 15 + i * SCALE);
 		asset.drawBlockB(885, 15 + i * SCALE);
 		asset.drawBlockB(15 + i * SCALE, 15);
 	}
-
-
 }
 
-void Object::updateObject(bool L, bool R, bool S) {
+void Object::updateObject(bool l, bool r, bool s) {
 	static float dir_x = 0;
 	if (isPlay) {
-		if (S) {
+		if (s) {
 			isPlay = false;
 			isPause = true;
 			return;
 		}
 		ball->update();
-		bat->update(L, R);
+		bat->update(l, r);
 		return;
 	}
 	if (isPause) {
-		if (S) {
+		if (s) {
 			isPlay = true;
 			isPause = false;
 			return;
@@ -163,22 +165,25 @@ void Object::updateObject(bool L, bool R, bool S) {
 		return;
 	}
 	if (isReady) {
-		if (S) {
+		if (s) {
 			isReady = false;
 			isPlay = true;
 			dir_x = 0;
 			return;
 		}
 		else {
-			if (L) {
-				if (dir_x > -0.9) dir_x -= 0.01;
+			if (l) {
+				if (dir_x > -0.6) dir_x -= 0.01;
 			}
-			if (R) {
-				if (dir_x < 0.9) dir_x += 0.01;
+			if (r) {
+				if (dir_x < 0.6) dir_x += 0.01;
 			}
 			ball->direction = Vector2D(dir_x, 1.0 - fabs(dir_x));
 			ball->drawDirection();
 			ball->direction.normalizer();
+			ball->center = bat->center + 100 * ball->direction;
+			pipe_time = 100;
+			pipe_angle = ball->direction.x * -69;
 			return;
 		}
 	}
@@ -186,7 +191,7 @@ void Object::updateObject(bool L, bool R, bool S) {
 		return;
 	}
 	if (life != 0) {
-		if (S) gameReady();
+		if (s) gameReady();
 		return;
 	}
 	if (life == 0) {
@@ -231,6 +236,26 @@ void Object::wallCollision() {
 		if (index == 2) {
 			isPlay = false;
 			life--;
+			return;
+		}
+		if (index == 6) {
+			ball->center = Vector2D(855, 395);
+			ball->direction = Vector2D(-1, -1);
+			return;
+		}
+		if (index == 9) {
+			ball->center = Vector2D(55, 395);
+			ball->direction = Vector2D(1, -1);
+			return;
+		}
+		if (index == 11) {
+			ball->center = Vector2D(120, 780);
+			ball->direction = Vector2D(1, -1);
+			return;
+		}
+		if (index == 13) {
+			ball->center = Vector2D(780, 780);
+			ball->direction = Vector2D(-1, -1);
 			return;
 		}
 		else {
@@ -283,6 +308,7 @@ void Object::brickCollision() {
 					isCollision = true;
 					collision_point = BRICK_TOP;
 					nVec = ball->center - brick[i][j]->center;
+					nVec.normalizer();
 				}
 				// 우측 면 충돌
 				else if (cy >= fmin(brick[i][j]->vtx[1].y, brick[i][j]->vtx[2].y) &&
@@ -291,6 +317,7 @@ void Object::brickCollision() {
 					isCollision = true;
 					collision_point = BRICK_RIGHT;
 					nVec = ball->center - brick[i][j]->center;
+					nVec.normalizer();
 				}
 				// 아랫 면 충돌
 				else if (cx >= fmin(brick[i][j]->vtx[2].x, brick[i][j]->vtx[3].x) &&
@@ -299,6 +326,7 @@ void Object::brickCollision() {
 					isCollision = true;
 					collision_point = BRICK_BOTTOM;
 					nVec = ball->center - brick[i][j]->center;
+					nVec.normalizer();
 				}
 				// 좌측 면 충돌
 				else if (cy >= fmin(brick[i][j]->vtx[3].y, brick[i][j]->vtx[0].y) &&
@@ -307,6 +335,7 @@ void Object::brickCollision() {
 					isCollision = true;
 					collision_point = BRICK_LEFT;
 					nVec = ball->center - brick[i][j]->center;
+					nVec.normalizer();
 				}
 				// 모서리 충돌 판정
 				else {
@@ -316,6 +345,7 @@ void Object::brickCollision() {
 						isCollision = true;
 						collision_point = BRICK_LEFT_TOP;
 						nVec = ball->center - brick[i][j]->center;
+						nVec.normalizer();
 					}
 					// 우 상단 모서리 충돌
 					else if (cx > brick[i][j]->center.x && cy > brick[i][j]->center.y
@@ -323,6 +353,7 @@ void Object::brickCollision() {
 						isCollision = true;
 						collision_point = BRICK_RIGHT_TOP;
 						nVec = ball->center - brick[i][j]->center;
+						nVec.normalizer();
 					}
 					// 우 하단 모서리 충돌
 					else if (cx > brick[i][j]->center.x && cy < brick[i][j]->center.y
@@ -330,6 +361,7 @@ void Object::brickCollision() {
 						isCollision = true;
 						collision_point = BRICK_RIGHT_BOTTOM;
 						nVec = ball->center - brick[i][j]->center;
+						nVec.normalizer();
 					}
 					// 좌 하단 모서리 충돌
 					else if (cx < brick[i][j]->center.x && cy < brick[i][j]->center.y
@@ -337,6 +369,7 @@ void Object::brickCollision() {
 						isCollision = true;
 						collision_point = BRICK_LFET_BOTTOM;
 						nVec = ball->center - brick[i][j]->center;
+						nVec.normalizer();
 					}
 					else { min = 80; }
 				}
@@ -344,7 +377,6 @@ void Object::brickCollision() {
 		}
 
 		if (isCollision) {
-			nVec.normalizer();
 			// 기본 벽돌
 			if (brick[c][r]->type == BRICK_NORMAL) {
 				brick_num--;

@@ -9,23 +9,35 @@ float brick_color[][3] = {
     {0, 29.0 / 255.0, 245.0 / 255.0}
 };
 
-Brick::Brick(int t, float y, float x):type(t){
-    float space = 0;
-    float hfScale = SCALE / 2;
+Brick::Brick(int t, float y, float x){
+    angle = 0;
     durability = 1;
-    color = type - 1;
-    type = type > 5 ? type - 5 : 0;
+    if (t > 5) {
+        type = BRICK_ITEMBOX;
+        if (t == 6) item = ITEM_MUSH;
+        else if (t == 7) item = ITEM_FLOWER;
+        else if (t == 8) item = ITEM_STAR;
+        color = -1;
+    }
+    else {
+        type = BRICK_NORMAL;
+        item = ITEM_NONE;
+        color = t - 1;
+    }
     
-
     x = (WIDTH - BRICK_ROW * SCALE) / 2  + x * SCALE;
-    y = HEIGHT - hfScale - y * SCALE;
+    y = HEIGHT - SCALE/2 - y * SCALE;
     center = Vector2D(x, y);
+    init();
+}
 
-    vtx[0] = Vector2D(x  - hfScale, y  + hfScale);
-    vtx[1] = Vector2D(x  + hfScale, y  + hfScale);
-    vtx[2] = Vector2D(x  + hfScale - space, y  - hfScale);
-    vtx[3] = Vector2D(x  - hfScale + space, y  - hfScale);
-    
+void Brick::init() {
+    float hfScale = SCALE / 2;
+    vtx[0] = Vector2D(center.x - hfScale, center.y + hfScale);
+    vtx[1] = Vector2D(center.x + hfScale, center.y + hfScale);
+    vtx[2] = Vector2D(center.x + hfScale, center.y - hfScale);
+    vtx[3] = Vector2D(center.x - hfScale, center.y - hfScale);
+
     bvtx[0] = vtx[0] + Vector2D(-RADIUS, +RADIUS);
     bvtx[1] = vtx[1] + Vector2D(+RADIUS, +RADIUS);
     bvtx[2] = vtx[2] + Vector2D(+RADIUS, -RADIUS);
@@ -33,7 +45,7 @@ Brick::Brick(int t, float y, float x):type(t){
 }
 
 void Brick::draw() {
-    if (type == 0) {
+    if (type == BRICK_NORMAL) {
         glBegin(GL_POLYGON);
         glColor3fv(brick_color[color]);
         glVertex2f(vtx[0].x, vtx[0].y);
@@ -41,9 +53,22 @@ void Brick::draw() {
         glVertex2f(vtx[2].x, vtx[2].y);
         glVertex2f(vtx[3].x, vtx[3].y);
         glEnd();
+        return;
     }
-    if (type == 1) {
+    if (type == BRICK_ITEMBOX) {
         asset.drawBlockA(center.x, center.y);
+        return;
+    }
+    if (type == BRICK_ITEM) {
+        if (item == ITEM_MUSH) {
+            asset.drawMush(center.x, center.y, angle);
+            center = center + gravity;
+            gravity.y -= 0.02;
+            angle += 1;
+            init();
+            if (center.y < 0) delete[] this;
+            return;
+        }
     }
 }
 
@@ -55,4 +80,19 @@ void Brick::drawBounding() {
     glVertex2f(bvtx[2].x, bvtx[2].y);
     glVertex2f(bvtx[3].x, bvtx[3].y);
     glEnd();
+}
+
+void Brick::collision() {
+    durability--;
+    if (durability < 1) {
+        if (item != ITEM_NONE) {
+            type = BRICK_ITEM;
+            gravity = Vector2D(0, 2);
+            return;
+        }
+        else {
+            delete[] this;
+        }
+    }
+    return;
 }

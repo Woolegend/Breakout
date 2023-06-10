@@ -48,7 +48,7 @@ class Object {
     Asset asset;
     int life, brick_num;
     float col_dis;
-    bool isPlay, isReady, isOver;
+    bool isPlay, isReady, isOver, isPause;
 public:
     Object();
     void initObject();

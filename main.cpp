@@ -38,7 +38,7 @@ void RenderScene(void)
     obj.drawObject();
     obj.checkCollision();
     obj.updateObject(isLDown, isRDown, clickSpace);
-
+    clickSpace = false;
 
     Sleep(3);
 

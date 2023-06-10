@@ -27,6 +27,7 @@ class Brick {
 public:
     int type, color, durability;
     Vector2D center, vtx[4], bvtx[4];
+    Asset asset;
 
     Brick(int t, float x, float y);
 

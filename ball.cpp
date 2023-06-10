@@ -3,7 +3,7 @@
 Ball::Ball(float x, float y) : center(x, y)
 {
     speed = 1;
-    direction = Vector2D(2, 5);
+    direction = Vector2D(0, 1);
     direction.normalizer();
     initVertex();
 }
@@ -40,7 +40,7 @@ void Ball::drawDirection(){
     glColor3f(0.0, 1.0, 0.0);
     glBegin(GL_LINES);
     glVertex2f(center.x, center.y);
-    glVertex2f(center.x + direction.x * 1000, center.y + direction.y * 1000);
+    glVertex2f(center.x + direction.x * 300, center.y + direction.y * 300);
     glEnd();
 }
 

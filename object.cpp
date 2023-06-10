@@ -22,7 +22,7 @@ int board[BRICK_COL][BRICK_ROW] = {
 	{0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0},
 	{0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 6, 6, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 6, 8, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
@@ -94,7 +94,7 @@ void Object::gameReady() {
 	// 공 위치 초기화
 	ball = new Ball(WIDTH / 2, 100);
 	// 배트 위치 초기화
-	bat = new Bat(WIDTH / 2, 50);
+	bat = new Bat(WIDTH / 2, 60);
 }
 
 // 생성된 오브젝트 그리기
@@ -131,7 +131,7 @@ void Object::drawObject() {
 		wall[i]->drawNormal();
 	}
 	*/
-
+	
 	//벽면 그리기
 	for (int i = 0; i < 30; i++) {
 		asset.drawBlockB(15, 15 + i * SCALE);
@@ -268,7 +268,7 @@ void Object::brickCollision() {
 	bool isCollision = false; // 충돌 여부
 	int c, r, // 충돌 벽돌의 인덱스를 저장
 		// 충돌 방향
-		collision_point;
+		collision_point = -1;
 	float
 		// 충돌 판정 최소 거리
 		// 벽돌과 충돌 시, 공과 충돌한 벽돌의 거리를 저장
@@ -287,15 +287,16 @@ void Object::brickCollision() {
 
 			// 해당 좌표에 벽돌 없을 경우
 			if (brick[i][j] == NULL) continue;
-			// 벽돌과 공이 너무 멀 경우
-			dis = (ball->center - brick[i][j]->center).scala();
-			if (min < dis) continue;
 
 			// 아이템일 경우 아이템 충돌 판정 호출
 			if (brick[i][j]->type == BRICK_ITEM) {
 				itemCollision(i, j);
 				continue;
 			}
+
+			// 벽돌과 공이 너무 멀 경우
+			dis = (ball->center - brick[i][j]->center).scala();
+			if (min < dis) continue;
 
 			float
 				cx = ball->center.x,
@@ -308,7 +309,15 @@ void Object::brickCollision() {
 				cy >= fmin(brick[i][j]->bvtx[2].y, brick[i][j]->bvtx[1].y) &&
 				cy <= fmax(brick[i][j]->bvtx[2].y, brick[i][j]->bvtx[1].y)) {
 				c = i, r = j;
+				
+				if (ball->type == BALL_STAR) {
+					isCollision = true;
+					nVec = Vector2D();
+					continue;
+				}
+
 				min = dis;
+
 
 				// 충돌 방향 판정
 				// 윗 면 충돌
@@ -392,12 +401,12 @@ void Object::brickCollision() {
 			}
 			// 아이템 박스일 경우
 			else if (brick[c][r]->type == BRICK_ITEMBOX) {
-				if (collision_point == BRICK_BOTTOM) {
+				if (collision_point == BRICK_BOTTOM ||
+					ball->type == BALL_STAR) {
 					brick[c][r]->collision();
 				}
 			}
-			ball->direction = ball->direction + 1.5 * nVec;
-			ball->direction.y = ball->direction.y + ball->direction.y > 0 ? 1 : -1;
+			ball->direction = ball->direction + 1.8 * nVec;
 			ball->direction.normalizer();
 		}
 	}
@@ -424,14 +433,14 @@ void Object::itemCollision(int c, int r) {
 	float
 		cx = brick[c][r]->center.x,
 		cy = brick[c][r]->center.y;
-	if (cx >= bat->bvtx[0].x - 5 && cx <= bat->bvtx[1].x + 5 &&
-		cy >= bat->bvtx[2].y - 20 && cy <= bat->bvtx[1].y + 5) {
+	if (cx >= bat->bvtx[0].x && cx <= bat->bvtx[1].x 
+		&& cy >= bat->bvtx[2].y && cy <= bat->bvtx[1].y) {
 		if (brick[c][r]->item == ITEM_MUSH) {
 			life++;
 		}
-		delete[] brick[c][r];
-	}
-	else if (cy < 0) {
+		if (brick[c][r]->item == ITEM_STAR) {
+			ball->setType(BALL_STAR);
+		}
 		delete[] brick[c][r];
 	}
 }

@@ -60,15 +60,22 @@ void Brick::draw() {
         return;
     }
     if (type == BRICK_ITEM) {
-        if (item == ITEM_MUSH) {
-            asset.drawMush(center.x, center.y, angle);
-            center = center + gravity;
-            gravity.y -= 0.02;
-            angle += 1;
-            init();
-            if (center.y < 0) delete[] this;
+        if (center.y < -20) {
+            delete[] this;
             return;
         }
+        if (item == ITEM_MUSH) {
+            asset.drawMush(center.x, center.y, angle);  
+        }
+        if (item == ITEM_STAR) {
+            asset.drawStar(center.x, center.y, angle);
+        }
+        center = center + gravity;
+        gravity.y -= 0.005;
+        angle += 1;
+        init();
+        return;
+        
     }
 }
 
@@ -87,7 +94,7 @@ void Brick::collision() {
     if (durability < 1) {
         if (item != ITEM_NONE) {
             type = BRICK_ITEM;
-            gravity = Vector2D(0, 2);
+            gravity = Vector2D(0, 1);
             return;
         }
         else {

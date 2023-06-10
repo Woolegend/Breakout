@@ -14,6 +14,9 @@
 #define        BALLSLICE            20
 #define        RADIUS               10
 
+#define			BALL_NORMAL				0
+#define			BALL_STAR				1
+
 
 
 #define			BRICK_COL				20

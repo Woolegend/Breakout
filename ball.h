@@ -22,11 +22,13 @@ public:
     Vector2D center;
     Vector2D* vertex[BALLSLICE];
     Vector2D direction;
+    int type, time;
     float speed;
 
     Ball(float x, float y);
     void initVertex();
     void draw();
     void update();
+    void setType(int t);
     void drawDirection();
 };

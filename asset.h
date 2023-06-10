@@ -15,6 +15,10 @@ public:
 	void drawBlockB(float x, float y);
 	void drawPipe(float x, float y, int l, float a);
 	void drawMush(float x, float y, float a);
+	void drawFlower(float x, float y, float a);
 	void drawStar(float x, float y, float a);
-	void drawMarioIdle(float x, float y, float a);
+	void drawMarioIdle(float x, float y, bool f, int t);
+	void drawMarioJump(float x, float y, bool f, int t);
+	void drawCoin(float x, float y);
+	void drawNumber(float x, float y, int n);
 };

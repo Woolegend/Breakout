@@ -92,7 +92,7 @@ void Asset::drawBlockB(float x, float y) {
 }
 
 GLfloat c_pipe[][3]{
-	{0, 0, 0},
+	{101.0 / 255.0, 142.0 / 255.0, 18.0 / 255.0},
 	{9.0 / 255.0, 255.0 / 255.0, 0.0},
 	{182.0 / 255.0, 255.0 / 255.0, 13.0 / 255.0}
 };
@@ -142,6 +142,18 @@ void Asset::drawPipe(float x, float y, int l, float a) {
 		}
 	}
 
+	for (int i = -1; i > -5; i--) {
+		for (int j = 0; j < 16; j++) {
+			if (j == 0 || j == 15) continue;
+			glColor3fv(c_pipe[pipe_body[(i * -1) % 2][j]]);
+			glBegin(GL_POLYGON);
+			glVertex2f(j * scale, i * scale);
+			glVertex2f((j + 1) * scale, i * scale);
+			glVertex2f((j + 1) * scale, (i + 1) * scale);
+			glVertex2f(j * scale, (i + 1) * scale);
+			glEnd();
+		}
+	}
 	glPopMatrix();
 }
 
@@ -181,6 +193,56 @@ void Asset::drawMush(float x, float y, float a) {
 		for (int j = 0; j < 16; j++) {
 			if (mush[i][j] == 0) continue;
 			glColor3fv(c_mush[mush[i][j] - 1]);
+			glBegin(GL_POLYGON);
+			glVertex2f(j * scale, -i * scale);
+			glVertex2f((j + 1) * scale, -i * scale);
+			glVertex2f((j + 1) * scale, -(i + 1) * scale);
+			glVertex2f(j * scale, -(i + 1) * scale);
+			glEnd();
+		}
+	}
+	glPopMatrix();
+}
+
+GLfloat c_flower[][3]{
+	{249.0 / 255.0, 24.0 / 255.0, 22.0 / 255.0},
+	{249.0 / 255.0, 135.0 / 255.0, 21.0 / 255.0},
+	{247.0 / 255.0, 239.0 / 255.0, 18.0 / 255.0},
+	{0, 0, 0},
+	{244.0 / 255.0, 243.0 / 255.0, 241.0 / 255.0},
+	{67.0 / 255.0, 174.0 / 255.0, 44.0 / 255.0}
+};
+
+int flower[16][16] = {
+	//-0--1--2--3--4--5--6--7--8--9-10-11-12-13-14-15
+	  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	  {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+	  {0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1, 0, 0},
+	  {0, 1, 1, 2, 2, 3, 4, 3, 3, 4, 3, 2, 2, 1, 1, 0},
+	  {0, 1, 1, 2, 3, 5, 4, 5, 5, 4, 5, 3, 2, 1, 1, 0},
+	  {0, 1, 1, 2, 2, 3, 4, 3, 3, 4, 3, 2, 2, 1, 1, 0},
+	  {0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1, 0, 0},
+	  {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+	  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	  {0, 0, 0, 0, 0, 0, 0, 6, 6, 0, 0, 0, 0, 0, 0, 0},
+	  {0, 6, 6, 0 ,0, 0, 0, 6, 6, 0, 0, 0, 0, 6, 6, 0},
+	  {0, 6, 6, 6, 0, 0, 0, 6, 6, 0, 0, 0, 6, 6, 6, 0},
+	  {0, 6, 6, 6, 6, 6, 0, 6, 6, 0, 6, 6, 6, 6, 6, 0},
+	  {0, 0, 6, 6, 6, 6, 0, 6, 6, 0, 6, 6, 6, 6, 0, 0},
+	  {0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 0, 0},
+	  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+void Asset::drawFlower(float x, float y, float a) {
+	float scale = SCALE / 16.0;
+	glPushMatrix();
+	glTranslatef(x, y, 0);
+	glRotatef(a, 0, 0, 1);
+	glTranslatef(-16 / 2 * scale, 16 / 2 * scale, 0);
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < 16; j++) {
+			if (flower[i][j] == 0) continue;
+			glColor3fv(c_flower[flower[i][j] - 1]);
 			glBegin(GL_POLYGON);
 			glVertex2f(j * scale, -i * scale);
 			glVertex2f((j + 1) * scale, -i * scale);
@@ -241,12 +303,28 @@ void Asset::drawStar(float x, float y, float a) {
 	glPopMatrix();
 }
 
-float c_mario_idle[][3] = {
+float c_mario_normal[][3] = {
 	{235.0 / 255.0, 51.0 / 255.0, 35.0 / 255.0},
 	{136.0 / 255.0, 97.0 / 255.0, 45.0 / 255.0},
 	{234.0 / 255.0, 195.0 / 255.0, 81.0 / 255.0},
 	{0, 0, 0},
 	{0, 29.0 / 255.0, 245.0 / 255.0}
+};
+
+float c_mario_flower[][3] = {
+	{253 / 255.0, 220.0 / 255.0, 177.0 / 255.0},
+	{216.0 / 255.0, 46.0 / 255.0, 11.0 / 255.0},
+	{234.0 / 255.0, 195.0 / 255.0, 81.0 / 255.0},
+	{216.0 / 255.0, 46.0 / 255.0, 11.0 / 255.0},
+	{206.0 / 255.0, 38.0 / 255.0, 2.0 / 255.0}
+};
+
+float c_mario_star[][3] = {
+	{253 / 255.0, 220.0 / 255.0, 177.0 / 255.0},
+	{216.0 / 255.0, 46.0 / 255.0, 11.0 / 255.0},
+	{234.0 / 255.0, 195.0 / 255.0, 81.0 / 255.0},
+	{216.0 / 255.0, 46.0 / 255.0, 11.0 / 255.0},
+	{206.0 / 255.0, 38.0 / 255.0, 2.0 / 255.0}
 };
 
 int mario_idle[16][16] = {
@@ -268,16 +346,247 @@ int mario_idle[16][16] = {
 	{ 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0 }
 };
 
-void Asset::drawMarioIdle(float x, float y, float a) {
+void Asset::drawMarioIdle(float x, float y, bool f, int t) {
 	float scale = SCALE / 16.0;
 	glPushMatrix();
 	glTranslatef(x, y, 0);
-	glRotatef(a, 0, 0, 1);
+	if(f) glRotatef(180, 0, 1, 0);
 	glTranslatef(-16 / 2 * scale, 16 / 2 * scale, 0);
 	for (int i = 0; i < 16; i++) {
 		for (int j = 0; j < 16; j++) {
 			if (mario_idle[i][j] == 0) continue;
-			glColor3fv(c_mario_idle[mario_idle[i][j] - 1]);
+			if (t == BALL_NORMAL) {
+				glColor3fv(c_mario_normal[mario_idle[i][j] - 1]);
+			}
+			else if (t == BALL_FLOWER) {
+				glColor3fv(c_mario_flower[mario_idle[i][j] - 1]);
+			}
+			else if (t == BALL_STAR) {
+				glColor3fv(c_mario_star[mario_idle[i][j] - 1]);
+			}
+			glBegin(GL_POLYGON);
+			glVertex2f(j * scale, -i * scale);
+			glVertex2f((j + 1) * scale, -i * scale);
+			glVertex2f((j + 1) * scale, -(i + 1) * scale);
+			glVertex2f(j * scale, -(i + 1) * scale);
+			glEnd();
+		}
+	}
+	glPopMatrix();
+}
+
+int mario_jump[16][16] = {
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3},
+	{0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 3, 3, 3},
+	{0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3},
+	{0, 0, 0, 0, 0, 2, 2, 2, 3, 3, 4, 3, 0, 1, 1, 1},
+	{0, 0, 0, 0, 2, 3, 2, 3, 3, 3, 4, 3, 3, 1, 1, 1},
+	{0, 0, 0, 0, 2, 3, 2, 2, 3, 3, 3, 4, 3, 3, 3, 1},
+	{0, 0, 0, 0, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 0},
+	{0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 4, 0, 0},
+	{0, 0, 1, 1, 1, 1, 1, 5, 1, 1, 1, 5, 1, 0, 0, 0},
+	{0, 1, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 5, 0, 0, 1},
+	{3, 3, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 0, 0, 1},
+	{3, 3, 3, 0, 5, 5, 1, 5, 5, 2, 5, 5, 2, 5, 1, 1},
+	{0, 3, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1},
+	{0, 0, 1, 1, 1, 5 ,5, 5, 5, 5, 5, 5, 5, 5, 1, 1},
+	{0, 1, 1, 1, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0},
+	{0, 1, 0, 0, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+void Asset::drawMarioJump(float x, float y, bool f, int t) {
+	float scale = SCALE / 16.0;
+	glPushMatrix();
+	glTranslatef(x, y, 0);
+	if (f) glRotatef(180, 0, 1, 0);
+	glTranslatef(-16 / 2 * scale, 16 / 2 * scale, 0);
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < 16; j++) {
+			if (mario_jump[i][j] == 0) continue;
+			if (t == BALL_NORMAL) {
+				glColor3fv(c_mario_normal[mario_jump[i][j] - 1]);
+			}
+			else if (t == BALL_FLOWER) {
+				glColor3fv(c_mario_flower[mario_jump[i][j] - 1]);
+			}
+			else if (t == BALL_STAR) {
+				glColor3fv(c_mario_star[mario_jump[i][j] - 1]);
+			}
+			glBegin(GL_POLYGON);
+			glVertex2f(j * scale, -i * scale);
+			glVertex2f((j + 1) * scale, -i * scale);
+			glVertex2f((j + 1) * scale, -(i + 1) * scale);
+			glVertex2f(j * scale, -(i + 1) * scale);
+			glEnd();
+		}
+	}
+	glPopMatrix();
+}
+
+GLfloat c_coin[][3]{
+	{246.0 / 255.0, 246.0 / 255.0, 246.0 / 255.0},
+	{246.0 / 255.0, 187.0 / 255.0, 7.0 / 255.0},
+	{210.0 / 255.0, 138.0 / 255.0, 36.0 / 255.0},
+	{247.0 / 255.0, 248.0 / 255.0, 24.0 / 255.0},
+	{34.0 / 255.0, 34.0 / 255.0, 32.0 / 255.0}
+};
+
+int coin[16][16] = {
+	//-0--1--2--3--4--5--6--7--8--9-10-11-12-13-14-15
+	  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //0
+	  {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0}, //1
+	  {0, 0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 3, 0, 0, 0, 0}, //2
+	  {0, 0, 0, 0, 1, 2, 4, 1, 1, 4, 2, 3, 0, 0, 0, 0}, //3
+	  {0, 0, 0, 1, 2, 4, 1, 4, 2, 5, 4, 2, 3, 0, 0, 0}, //4
+	  {0, 0, 0, 1, 2, 4, 1, 4, 2, 5, 4, 2, 3, 0, 0, 0}, //5
+	  {0, 0, 0, 1, 2, 4, 1, 4, 2, 5, 4, 2, 3, 0, 0, 0}, //6
+	  {0, 0, 0, 1, 2, 4, 1, 4, 2, 5, 4, 2, 3, 0, 0, 0}, //7
+	  {0, 0, 0, 1, 2, 4, 1, 4, 2, 5, 4, 2, 3, 0, 0, 0}, //8
+	  {0, 0, 0, 1, 2, 4, 1, 4, 2, 5, 4, 2, 3, 0, 0, 0}, //9
+	  {0, 0, 0, 1, 2, 4, 1, 2, 2, 5, 4, 2, 3, 0, 0, 0}, //10
+	  {0, 0, 0, 1, 2, 4, 1, 2, 2, 5, 4, 2, 3, 0, 0, 0}, //11
+	  {0, 0, 0, 0, 2, 4, 4, 5, 5, 4, 2, 3, 0 ,0 ,0, 0}, //12
+	  {0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0}, //13
+	  {0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0}, //14
+	  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}  //15
+};
+
+void Asset::drawCoin(float x, float y) {
+	float scale = SCALE / 16.0;
+	glPushMatrix();
+	glTranslatef(x, y, 0);
+	glTranslatef(-16 / 2 * scale, 16 / 2 * scale, 0);
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < 16; j++) {
+			if (coin[i][j] == 0) continue;
+			glColor3fv(c_coin[coin[i][j] - 1]);
+			glBegin(GL_POLYGON);
+			glVertex2f(j * scale, -i * scale);
+			glVertex2f((j + 1) * scale, -i * scale);
+			glVertex2f((j + 1) * scale, -(i + 1) * scale);
+			glVertex2f(j * scale, -(i + 1) * scale);
+			glEnd();
+		}
+	}
+	glPopMatrix();
+}
+
+int num_zero[7][6] = {
+	{0, 1, 1, 1, 2, 0},
+	{1, 2, 0, 0, 1, 2},
+	{1, 2, 0, 0, 1, 2},
+	{1, 2, 0, 0, 1, 2},
+	{1, 2, 0, 0, 1, 2},
+	{1, 2, 0, 0, 1, 2},
+	{0, 1, 1, 1, 2, 0}
+};
+int num_one[7][6] = {
+	 {0, 0, 1, 2, 0, 0},
+	 {0, 1, 1, 2, 0, 0},
+	 {0, 0, 1, 2, 0, 0},
+	 {0, 0, 1, 2, 0, 0},
+	 {0, 0, 1, 2, 0, 0},
+	 {0, 0, 1, 2, 0, 0},
+	 {0, 1, 1, 1, 2, 0}
+};
+int num_two[7][6] = {
+	{0, 1, 1, 1, 2, 0},
+	{1, 2, 0, 0, 1, 2},
+	{0, 0, 0, 0, 1, 2},
+	{0, 0, 1, 1, 2, 0},
+	{0, 1, 2, 0, 0, 0},
+	{1, 2, 0, 0, 0, 0},
+	{1, 1, 1, 1, 1, 2}
+};
+int num_three[7][6] = {
+	{0, 1, 1, 1, 2, 0},
+	{1, 2, 0, 0, 1, 2},
+	{0, 0, 0, 0, 1, 2},
+	{0, 0, 1, 1, 2, 0},
+	{0, 0, 0, 0, 1, 2},
+	{1, 2, 0, 0, 1, 2},
+	{0, 1, 1, 1, 2, 0}
+};
+int num_four[7][6] = {
+	{0, 1, 1, 1, 2, 0},
+	{1, 2, 0, 1, 2, 0},
+	{1, 2, 0, 1, 2, 0},
+	{1, 2, 0, 1, 2, 0},
+	{1, 1, 1, 1, 1, 2},
+	{0, 0, 0, 1, 2, 0},
+	{0, 0, 0, 1, 2, 0}
+};
+int num_five[7][6] = {
+	{1, 1, 1, 1, 1, 2},
+	{1, 2, 0, 0, 0, 0},
+	{1, 1, 1, 1, 2, 0},
+	{0, 0, 0, 0, 1, 2},
+	{0, 0, 0, 0, 1, 2},
+	{1, 2, 0, 0, 2, 0},
+	{0, 1, 1, 1, 2, 0}
+};
+int num_six[7][6] = {
+    {0, 1, 1, 1, 2, 0},
+	{1, 2, 0, 0, 1, 2},
+	{1, 2, 0, 0, 0, 0},
+	{1, 1, 1, 1, 2, 0},
+	{1, 2, 0, 0, 1, 2},
+	{1, 2, 0, 0, 1, 2},
+	{0, 1, 1, 1, 2, 0}
+};
+int num_seven[7][6] = {
+	{1, 1, 1, 1, 1, 2},
+	{0, 0, 0, 0, 1, 2},
+	{0, 0, 0, 1, 2, 0},
+	{0, 0, 1, 2, 0, 0},
+	{0, 0, 1, 2, 0, 0},
+	{0, 0, 1, 2, 0, 0},
+	{0, 0, 1, 2, 0, 0}
+};
+int num_eight[7][6] = {
+	{0, 1, 1, 1, 2, 0},
+	{1, 2, 0, 0, 1, 2},
+	{1, 2, 0, 0, 1, 2},
+	{0, 1, 1, 1, 2, 0},
+	{1, 2, 0, 0, 1, 2},
+	{1, 2, 0, 0, 1, 2},
+	{0, 1, 1, 1, 2, 0}
+};
+int num_nine[7][6] = {
+	{0, 1, 1, 1, 2, 0},
+	{1, 2, 0, 0, 1, 2},
+	{1, 2, 0, 0, 1, 2},
+	{0, 1, 1, 1, 1, 2},
+	{0, 0, 0, 0, 1, 2},
+	{1, 2, 0, 0, 1, 2},
+	{0, 1, 1, 1, 2, 0}
+};
+
+GLfloat c_num[][3] = {
+	{247.0 / 255.0, 248.0 / 255.0, 24.0 / 255.0},
+	{246.0 / 255.0, 187.0 / 255.0, 7.0 / 255.0}
+};
+
+void Asset::drawNumber(float x, float y, int n) {
+	float scale = SCALE / 7.0;
+	int tmp = 0;
+	glPushMatrix();
+	glTranslatef(x, y, 0);
+	glTranslatef(-6 / 2 * scale, 7 / 2 * scale, 0);
+	for (int i = 0; i < 7; i++) {
+		for (int j = 0; j < 6; j++) {
+			if (n == 0) tmp = num_zero[i][j];
+			else if (n == 1) tmp = num_one[i][j];
+			else if (n == 2) tmp = num_two[i][j];
+			else if (n == 3) tmp = num_three[i][j];
+			else if (n == 4) tmp = num_four[i][j];
+			else if (n == 5) tmp = num_five[i][j];
+			else if (n == 6) tmp = num_six[i][j];
+			else if (n == 7) tmp = num_seven[i][j];
+			else if (n == 8) tmp = num_eight[i][j];
+			else if (n == 9) tmp = num_nine[i][j];
+			if (tmp == 0) continue;
+			glColor3fv(c_num[tmp-1]);
 			glBegin(GL_POLYGON);
 			glVertex2f(j * scale, -i * scale);
 			glVertex2f((j + 1) * scale, -i * scale);

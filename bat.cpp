@@ -2,7 +2,7 @@
 
 
 Bat::Bat(float x, float y): center(x, y) {
-    speed = 1, h = 10, w = 100;
+    speed = 1, h = 20, w = 100;
     update(true, true);
 }
 

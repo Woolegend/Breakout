@@ -92,7 +92,7 @@ void Object::initObject() {
 void Object::gameReady() {
 	isReady = true;
 	// 공 위치 초기화
-	ball = new Ball(WIDTH / 2, 80);
+	ball = new Ball(WIDTH / 2, 100);
 	// 배트 위치 초기화
 	bat = new Bat(WIDTH / 2, 50);
 }
@@ -104,6 +104,7 @@ void Object::drawObject() {
 	ball->draw();
 	//배트 그리기
 	bat->draw();
+	bat->drawBounding();
 
 	//벽돌 그리기
 	for (int i = 0; i < BRICK_COL; i++) {
@@ -111,7 +112,7 @@ void Object::drawObject() {
 			if (brick[i][j] == NULL)
 				continue;
 			brick[i][j]->draw();
-			//brick[i][j]->drawBounding();
+			brick[i][j]->drawBounding();
 		}
 	}
 
@@ -188,8 +189,8 @@ void Object::updateObject(bool L, bool R, bool S) {
 				if (dir_x < 0.9) dir_x += 0.01;
 			}
 			ball->direction = Vector2D(dir_x, 1.0 - fabs(dir_x));
-			ball->direction.normalizer();
 			ball->drawDirection();
+			ball->direction.normalizer();
 			return;
 		}
 	}
@@ -256,7 +257,7 @@ void Object::wallCollision() {
 			return;
 		}
 		else {
-			ball->direction = ball->direction + wall[index]->normal * 2;
+			ball->direction = ball->direction + wall[index]->normal * 1.5;
 			ball->direction.normalizer();
 		}
 	}
@@ -395,7 +396,8 @@ void Object::brickCollision() {
 					brick[c][r]->collision();
 				}
 			}
-			ball->direction = ball->direction + 2 * nVec;
+			ball->direction = ball->direction + 1.5 * nVec;
+			ball->direction.y = ball->direction.y + ball->direction.y > 0 ? 1 : -1;
 			ball->direction.normalizer();
 		}
 	}
@@ -412,7 +414,7 @@ void Object::batCollision() {
 		nVec = ball->center - bat->center;
 		nVec.normalizer();
 
-		ball->direction = ball->direction + 2 * nVec + Vector2D(0, 1);
+		ball->direction = nVec * Vector2D(0.3, 1);
 		ball->direction.normalizer();
 	}
 }
@@ -422,8 +424,8 @@ void Object::itemCollision(int c, int r) {
 	float
 		cx = brick[c][r]->center.x,
 		cy = brick[c][r]->center.y;
-	if (cx >= bat->bvtx[0].x + 5 && cx <= bat->bvtx[1].x - 5 &&
-		cy >= bat->bvtx[2].y - 5 && cy <= bat->bvtx[1].y + 5) {
+	if (cx >= bat->bvtx[0].x - 5 && cx <= bat->bvtx[1].x + 5 &&
+		cy >= bat->bvtx[2].y - 20 && cy <= bat->bvtx[1].y + 5) {
 		if (brick[c][r]->item == ITEM_MUSH) {
 			life++;
 		}
@@ -468,7 +470,6 @@ void Object::drawIntersection(Vector2D* l2l, Vector2D* p2l, Vector2D* c2l, Vecto
 	}
 	glEnd();
 }
-
 
 // 두 선분의 교점을 반환
 // 선분A 시점, 선분A 종점, 선분B 시점, 선분B 종점

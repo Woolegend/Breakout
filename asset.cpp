@@ -175,7 +175,7 @@ void Asset::drawMush(float x, float y, float a) {
     float scale = SCALE / 16.0;
     glPushMatrix();
     glTranslatef(x, y, 0);
-    glRotatef(1, 0, 0, 1);
+    glRotatef(a, 0, 0, 1);
     glTranslatef(-16 / 2 * scale, 16 / 2 * scale, 0);
     for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 16; j++) {

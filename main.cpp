@@ -40,7 +40,7 @@ void RenderScene(void)
     obj.updateObject(isLDown, isRDown, clickSpace);
     clickSpace = false;
 
-    Sleep(1);
+    Sleep(5);
 
     glutSwapBuffers();
     glFlush();

@@ -142,16 +142,8 @@ void Object::drawObject() {
 
 }
 
-// 생성된 오브젝트 정보 최신화
-// 매개변수
-// bool L : 좌측 화살표 입력
-// bool R : 우측 화살표 입력
-// bool S : 스페이스바 입력
 void Object::updateObject(bool L, bool R, bool S) {
 	static float dir_x = 0;
-	// 게임 플레이 중
-	// 배트 위치 최신화
-	// 공 위치 최신화
 	if (isPlay) {
 		if (S) {
 			isPlay = false;
@@ -170,11 +162,7 @@ void Object::updateObject(bool L, bool R, bool S) {
 		}
 		return;
 	}
-	// 게임 시작 전 준비 단계
-	// 공의 시작 방향 선택 사능
 	if (isReady) {
-		// 스페이스 입력 시
-		// 게임 상태 플레이로 전환
 		if (S) {
 			isReady = false;
 			isPlay = true;
@@ -194,28 +182,19 @@ void Object::updateObject(bool L, bool R, bool S) {
 			return;
 		}
 	}
-
-	// 게임 종료 시
 	if (isOver) {
 		return;
 	}
-
-	// 목숨을 잃었을 때
-	// 목숨이 남았을 경우
-	// 게임 상태를 준비 단계로 전환
 	if (life != 0) {
 		if (S) gameReady();
 		return;
 	}
-	// 목숨을 모두 잃었을 경우
-	// 게임 종료
 	if (life == 0) {
 		isOver = true;
 		return;
 	}
 }
 
-// 각종 충돌 판정 확인
 void Object::checkCollision() {
 	//게임 상태 [게임 단계]일 때 확인
 	if (!isPlay) return;
@@ -224,8 +203,6 @@ void Object::checkCollision() {
 	batCollision();
 }
 
-// 벽면 충돌 판정 확인
-// 충돌 대상 : 사면의 벽, 사선 파이프
 void Object::wallCollision() {
 	Vector2D* l2l = NULL, * p2l = NULL, * c2l = NULL, * col = NULL;
 	float dis = 10000, tmp;
@@ -262,39 +239,22 @@ void Object::wallCollision() {
 		}
 	}
 }
-
-// 벽돌 충돌 판정 확인 
+ 
 void Object::brickCollision() {
-	bool isCollision = false; // 충돌 여부
-	int c, r, // 충돌 벽돌의 인덱스를 저장
-		// 충돌 방향
+	bool isCollision = false; 
+	int c, r,
 		collision_point = -1;
 	float
-		// 충돌 판정 최소 거리
-		// 벽돌과 충돌 시, 공과 충돌한 벽돌의 거리를 저장
-		// 다수의 벽돌과 충돌 시 거리가 가장 가까운 벽돌과 충돌
 		min = 80,
-		// 공의 중심과 벽돌간의 거리
 		dis;
-	//충돌 시 법선 벡터
 	Vector2D nVec;
-
-	//모든 벽돌의 위치와 충돌 여부 판정
 	for (int i = 1; i < BRICK_COL - 1; i++) {
 		for (int j = 1; j < BRICK_ROW - 1; j++) {
-
-			//충돌 판정을 스킵하는 경우
-
-			// 해당 좌표에 벽돌 없을 경우
 			if (brick[i][j] == NULL) continue;
-
-			// 아이템일 경우 아이템 충돌 판정 호출
 			if (brick[i][j]->type == BRICK_ITEM) {
 				itemCollision(i, j);
 				continue;
 			}
-
-			// 벽돌과 공이 너무 멀 경우
 			dis = (ball->center - brick[i][j]->center).scala();
 			if (min < dis) continue;
 
@@ -302,8 +262,6 @@ void Object::brickCollision() {
 				cx = ball->center.x,
 				cy = ball->center.y;
 
-			// 충돌 범위 판점
-			// 충돌 상자 범위 내부인가?
 			if (cx >= fmin(brick[i][j]->bvtx[0].x, brick[i][j]->bvtx[1].x) &&
 				cx <= fmax(brick[i][j]->bvtx[0].x, brick[i][j]->bvtx[1].x) &&
 				cy >= fmin(brick[i][j]->bvtx[2].y, brick[i][j]->bvtx[1].y) &&
@@ -318,15 +276,13 @@ void Object::brickCollision() {
 
 				min = dis;
 
-
-				// 충돌 방향 판정
 				// 윗 면 충돌
 				if (cx >= fmin(brick[i][j]->vtx[0].x, brick[i][j]->vtx[1].x) &&
 					cx <= fmax(brick[i][j]->vtx[0].x, brick[i][j]->vtx[1].x) &&
 					cy > brick[i][j]->center.y) {
 					isCollision = true;
 					collision_point = BRICK_TOP;
-					nVec = Vector2D(0, 1);
+					nVec = ball->center - brick[i][j]->center;
 				}
 				// 우측 면 충돌
 				else if (cy >= fmin(brick[i][j]->vtx[1].y, brick[i][j]->vtx[2].y) &&
@@ -334,7 +290,7 @@ void Object::brickCollision() {
 					cx > brick[i][j]->center.x) {
 					isCollision = true;
 					collision_point = BRICK_RIGHT;
-					nVec = Vector2D(1, 0);
+					nVec = ball->center - brick[i][j]->center;
 				}
 				// 아랫 면 충돌
 				else if (cx >= fmin(brick[i][j]->vtx[2].x, brick[i][j]->vtx[3].x) &&
@@ -342,7 +298,7 @@ void Object::brickCollision() {
 					cy < brick[i][j]->center.y) {
 					isCollision = true;
 					collision_point = BRICK_BOTTOM;
-					nVec = Vector2D(0, -1);
+					nVec = ball->center - brick[i][j]->center;
 				}
 				// 좌측 면 충돌
 				else if (cy >= fmin(brick[i][j]->vtx[3].y, brick[i][j]->vtx[0].y) &&
@@ -350,7 +306,7 @@ void Object::brickCollision() {
 					cx < brick[i][j]->center.x) {
 					isCollision = true;
 					collision_point = BRICK_LEFT;
-					nVec = Vector2D(-1, 0);
+					nVec = ball->center - brick[i][j]->center;
 				}
 				// 모서리 충돌 판정
 				else {
@@ -359,60 +315,54 @@ void Object::brickCollision() {
 						&& RADIUS >= (ball->center - brick[i][j]->vtx[0]).scala()) {
 						isCollision = true;
 						collision_point = BRICK_LEFT_TOP;
-						nVec = Vector2D(-1, 1);
-						nVec.normalizer();
+						nVec = ball->center - brick[i][j]->center;
 					}
 					// 우 상단 모서리 충돌
 					else if (cx > brick[i][j]->center.x && cy > brick[i][j]->center.y
 						&& RADIUS >= (ball->center - brick[i][j]->vtx[1]).scala()) {
 						isCollision = true;
 						collision_point = BRICK_RIGHT_TOP;
-						nVec = Vector2D(1, 1);
-						nVec.normalizer();
+						nVec = ball->center - brick[i][j]->center;
 					}
 					// 우 하단 모서리 충돌
 					else if (cx > brick[i][j]->center.x && cy < brick[i][j]->center.y
 						&& RADIUS >= (ball->center - brick[i][j]->vtx[2]).scala()) {
 						isCollision = true;
 						collision_point = BRICK_RIGHT_BOTTOM;
-						nVec = Vector2D(1, -1);
-						nVec.normalizer();
+						nVec = ball->center - brick[i][j]->center;
 					}
 					// 좌 하단 모서리 충돌
 					else if (cx < brick[i][j]->center.x && cy < brick[i][j]->center.y
 						&& RADIUS >= (ball->center - brick[i][j]->vtx[3]).scala()) {
 						isCollision = true;
 						collision_point = BRICK_LFET_BOTTOM;
-						nVec = Vector2D(-1, -1);
-						nVec.normalizer();
+						nVec = ball->center - brick[i][j]->center;
 					}
-					//모서리 판정 실패 시
 					else { min = 80; }
 				}
 			}
 		}
 
-		// 벽돌과 충돌 시
 		if (isCollision) {
-			// 기본 벽돌일 경우
+			nVec.normalizer();
+			// 기본 벽돌
 			if (brick[c][r]->type == BRICK_NORMAL) {
 				brick_num--;
 				brick[c][r]->collision();
 			}
-			// 아이템 박스일 경우
+			// 아이템 박스
 			else if (brick[c][r]->type == BRICK_ITEMBOX) {
 				if (collision_point == BRICK_BOTTOM ||
 					ball->type == BALL_STAR) {
 					brick[c][r]->collision();
 				}
 			}
-			ball->direction = ball->direction + 1.8 * nVec;
+			ball->direction = ball->direction + 2 * nVec ;
 			ball->direction.normalizer();
 		}
 	}
 }
 
-// 배트 충돌 판정 확인
 void Object::batCollision() {
 	if (ball->center.y > (bat->center.y + bat->h + 10)) return;
 
@@ -428,7 +378,6 @@ void Object::batCollision() {
 	}
 }
 
-// 아이템 충돌 판정 확인
 void Object::itemCollision(int c, int r) {
 	float
 		cx = brick[c][r]->center.x,
@@ -446,7 +395,6 @@ void Object::itemCollision(int c, int r) {
 }
 
 
-// 공과 벽의 예상 충돌 지정 / 벽돌은 해당되지 않는다.
 void Object::drawIntersection(Vector2D* l2l, Vector2D* p2l, Vector2D* c2l, Vector2D* col) {
 	glPointSize(5);
 	glColor3f(0, 0, 1);

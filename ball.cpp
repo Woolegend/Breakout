@@ -3,7 +3,7 @@
 
 Ball::Ball(float x, float y) : center(x, y)
 {
-    speed = 1;
+    speed = 1.5;
     time = 0;
     type = BALL_NORMAL;
     direction = Vector2D(0, 1);
@@ -37,11 +37,6 @@ void Ball::draw() {
 
 void Ball::update() {
     center = center + speed * direction;
-    if (-0.05 < direction.y && direction.y < 0.05) {
-        direction.y = 0.5;
-        direction.x *= 0.5;
-        direction.normalizer();
-    }
     if (time) {
         if (--time == 0) {
             type = BALL_NORMAL;

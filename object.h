@@ -41,14 +41,14 @@
 #include "init.h"
 
 class Object {
-    Ball* ball;
+    Ball* ball, *fireball;
     Bat* bat;
     Wall* wall[NUMOFWALL];
     Brick*** brick;
     Asset asset;
-    int life, brick_num, coin, pipe_time;
-    float col_dis, pipe_angle;
-    bool isPlay, isReady, isOver, isPause;
+    int life, brick_num, coin, pipe_time, move;
+    float col_dis, pipe_angle, cloud_x[6], cloud_speed;
+    bool isPlay, isReady, isOver;
 public:
     Object();
     void initObject();
@@ -57,10 +57,10 @@ public:
     void updateObject(bool l, bool r, bool s);
     void checkCollision();
     void wallCollision();
-    void brickCollision();
+    void brickCollision(Ball *b);
     void batCollision();
     void itemCollision(int c, int r);
-    void drawIntersection(Vector2D* l2l, Vector2D* p2l, Vector2D *c2l, Vector2D *col);
+    void shootFire();
     Vector2D* lineToLine(Vector2D v1, Vector2D v2, Vector2D v3, Vector2D v4);
     Vector2D* pointToLine(Vector2D c, Vector2D v1, Vector2D v2);
     Vector2D* circleToLine(Vector2D l2l, Vector2D p2l);

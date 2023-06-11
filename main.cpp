@@ -27,7 +27,7 @@ void MyReshape(int w, int h) {
 }
 
 void frameReset() {
-    glClearColor(0.8, 0.8, 0.8, 0.0);
+    glClearColor(118.0 / 255.0, 135.0 / 255.0, 254.0 / 255.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

@@ -3,27 +3,26 @@
 
 //마리오 게임 보드
 int board[BRICK_COL][BRICK_ROW] = {
-	// 모서리 인덱스는 0으로 고정
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 1, 2, 1, 1, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 1, 2, 1, 1, 0, F, S, 0, 0},
 	{0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 3, 2, 1, 2, 1, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 3, 3, 4, 1, 3, 1, 1, 4, 4, 1, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 1, 1, 4, 4, 3, 3, 1, 1, 1, 4, 0 ,0, 0, 0},
-	{0, 0, 0, 0, 3, 4, 4, 5, 5, 4, 4, 4, 4, 5, 2, 1, 3, 3, 0, 0},
+	{F, M, F, 0, 3, 4, 4, 5, 5, 4, 4, 4, 4, 5, 2, 1, 3, 3, 0, 0},
 	{0, 0, 0, 0, 3, 3, 5, 6, 7, 4, 3, 3, 4, 4, 4, 3, 3, 7, 3, 0},
 	{0, 0, 0, 0, 1, 7, 6, 6, 7, 4, 3, 1, 3, 3, 3, 3, 3, 3, 3, 0},
-	{0, 0, 0, 0, 6, 7, 7, 6, 7, 7, 3, 3, 1, 5, 1, 5, 1, 5, 0, 0},
+	{0, 0, 0, 0, 6, 7, 7, F, 7, 7, 3, 3, 1, 5, 1, 5, 1, 5, 0, 0},
 	{0, 0, 0, 7, 6, 6, 7, 7, 8, 7, 7, 3, 3, 3, 3, 3, 3, 0, 0, 0},
-	{0, 0, 6, 7, 7, 6, 6, 8, 8, 8, 7, 7, 7, 7, 7, 7, 6, 7, 0, 0},
+	{0, 0, 6, 7, 7, S, 6, 8, 8, 8, 7, 7, 7, 7, 7, 7, 6, 7, M, F},
 	{0, 0, 6, 6, 7, 7, 8, 8, 6, 3, 3, 3, 3, 3, 3, 6, 7, 7, 0, 0},
-	{0, 0, 5, 6, 6, 6, 5, 6, 6, 3, 3, 3, 3, 3, 3, 7, 7, 6, 6, 0},
-	{0, 6, 0, 5, 6, 5, 8, 8, 8, 6, 6, 6, 6, 6, 6, 8, 6, 6, 5 ,0},
+	{0, 0, 5, F, 6, 6, 5, 6, 6, 3, 3, 3, 3, 3, 3, 7, 7, 6, 6, 0},
+	{0, 6, 0, 5, 6, 5, 8, 8, 8, 6, 6, 6, S, 6, 6, 8, 6, 6, 5 ,0},
 	{0, 6, 6, 6, 8, 8, 6, 6, 6, 8, 3, 3, 3, 3, 3, 8 ,6, 5, 0, 0},
 	{0, 0, 6, 6, 8 ,6, 6, 6, 6, 8, 6, 6, 6, 6, 8, 6, 6, 0, 0, 0},
 	{0, 0, 0, 6, 8, 6, 6, 6, 6, 8, 8, 3, 3, 8, 6, 6, 6, 0, 0, 0},
-	{0, 0, 0, 0, 0, 6, 5, M, 5, F, 0, 0, 0, 6, 6, S, 5, 6, 5, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	{0, 0, 0, 0, 0, 6, 5, 6, 5, 6, 0, 0, 0, 6, 6, 6, 5, 6, 5, 0},
+	{0, 0, 0, 0, 0, 0, 0, F, 0, 0, 0, M, 0, 0, 0, F, 0, 0, 0, 0}
 
 };
 
@@ -35,15 +34,25 @@ Object::Object() {
 void Object::initObject() {
 	isPlay = false;
 	isOver = false;
-	isPause = false;
 	coin = 0;
 	life = 3;
 	brick_num = 0;
+	move = 0;
+	fireball = new Ball(0, 0);
+	fireball->setType(BALL_NONE);
 
 	wall[0] = new Wall(SCALE, HEIGHT, WIDTH - SCALE, HEIGHT);
 	wall[1] = new Wall(WIDTH - SCALE, HEIGHT, WIDTH - SCALE, SCALE);
 	wall[2] = new Wall(WIDTH - SCALE, SCALE, SCALE, SCALE);
 	wall[3] = new Wall(SCALE, SCALE, SCALE, HEIGHT);
+
+	cloud_x[0] = 100;
+	cloud_x[1] = 800;
+	cloud_x[2] = 1000;
+	cloud_x[3] = 300;
+	cloud_x[4] = 500;
+	cloud_x[5] = -200;
+	cloud_speed = 0.01;
 
 	float co = 32 * sqrt(2);
 	float sz = 100;	
@@ -90,7 +99,6 @@ void Object::initObject() {
 	}
 }
 
-// 게임 상태 [준비 단계]로 전환
 void Object::gameReady() {
 	isReady = true;
 	// 공 위치 초기화
@@ -99,13 +107,24 @@ void Object::gameReady() {
 	bat = new Bat(WIDTH / 2, 50);
 }
 
-// 생성된 오브젝트 그리기
 void Object::drawObject() {
+	for (int i = 0; i < 4; i++) {
+		if(cloud_x[i] > 1200)
+			cloud_x[i] = -200;
+	}
+	asset.drawCloud(cloud_x[0] += cloud_speed, 800, 2);
+	asset.drawCloud(cloud_x[1] += cloud_speed, 700, 2);
+	asset.drawCloud(cloud_x[2] += cloud_speed, 900, 1);
+	asset.drawCloud(cloud_x[3] += cloud_speed, 750, 1);
+	asset.drawCloud(cloud_x[4] += cloud_speed, 850, 1);
+	asset.drawCloud(cloud_x[5] += cloud_speed, 650, 1);
 
 	//공 그리기
 	ball->draw();
+	if (fireball != NULL) {
+		fireball->draw();
+	}
 	//배트 그리기
-	bat->drawBounding();
 	if (pipe_time) {
 		asset.drawPipe(
 			bat->center.x, 
@@ -114,7 +133,6 @@ void Object::drawObject() {
 			pipe_angle);
 		pipe_time--;
 	}
-	bat->draw();
 
 	//벽돌 그리기
 	for (int i = 0; i < BRICK_COL; i++) {
@@ -143,6 +161,19 @@ void Object::drawObject() {
 		asset.drawBlockB(15 + i * SCALE, 15);
 	}
 
+
+	//발판
+	asset.drawWallCloud(bat->center.x - 80, bat->center.y, 45);
+	asset.drawWallCloud(bat->center.x, bat->center.y, 45);
+	asset.drawWallCloud(bat->center.x + 80, bat->center.y, 45);
+	asset.drawWallCloud(bat->center.x - 40, bat->center.y, 45);
+	asset.drawWallCloud(bat->center.x + 40, bat->center.y, 45);
+
+	//발판 미는 루이지
+	asset.drawLuigiMove(bat->center.x - 100, bat->center.y, false, move % 4);
+	asset.drawLuigiMove(bat->center.x + 100, bat->center.y, true, (move + 2) % 4);
+
+	//스코어
 	asset.drawCoin(760, 880);
 	asset.drawNumber(790, 883, coin/100);
 	asset.drawNumber(820, 883, coin%100/10);
@@ -155,19 +186,27 @@ void Object::updateObject(bool l, bool r, bool s) {
 		if (s) {
 			isPlay = false;
 			isReady = false;
+			fireball->setType(BALL_NONE);
 			life--;
 			return;
 		}
-		ball->update();
-		bat->update(l, r);
-		return;
-	}
-	if (isPause) {
-		if (s) {
-			isPlay = true;
-			isPause = false;
-			return;
+		if (fireball->type == BALL_FIRE) {
+			fireball->update();
 		}
+		if (ball->center.x < 0 ||
+			ball->center.x > WIDTH ||
+			ball->center.y < 0 ||
+			ball->center.y > HEIGHT) {
+			isPlay = false;
+			isReady = false;
+			fireball->setType(BALL_NONE);
+			life--;
+		}
+		ball->update();
+		shootFire();
+		bat->update(l, r);
+		move++;
+		if (!l && !r) move = 0;
 		return;
 	}
 	if (isReady) {
@@ -207,10 +246,11 @@ void Object::updateObject(bool l, bool r, bool s) {
 }
 
 void Object::checkCollision() {
-	//게임 상태 [게임 단계]일 때 확인
 	if (!isPlay) return;
 	wallCollision();
-	brickCollision();
+	brickCollision(ball);
+	if(fireball->type == BALL_FIRE)
+		brickCollision(fireball);
 	batCollision();
 }
 
@@ -234,7 +274,6 @@ void Object::wallCollision() {
 		if (tmp < dis) {
 			dis = tmp;
 			index = i;
-			drawIntersection(l2l, p2l, c2l, col);
 		}
 	}
 
@@ -271,7 +310,7 @@ void Object::wallCollision() {
 	}
 }
  
-void Object::brickCollision() {
+void Object::brickCollision(Ball* b) {
 	bool isCollision = false; 
 	int c, r,
 		collision_point = -1;
@@ -279,19 +318,20 @@ void Object::brickCollision() {
 		min = 80,
 		dis;
 	Vector2D nVec;
-	for (int i = 1; i < BRICK_COL - 1; i++) {
-		for (int j = 1; j < BRICK_ROW - 1; j++) {
+	if (b == NULL) return;
+	for (int i = 0; i < BRICK_COL; i++) {
+		for (int j = 0; j < BRICK_ROW; j++) {
 			if (brick[i][j] == NULL) continue;
 			if (brick[i][j]->type == BRICK_ITEM) {
 				itemCollision(i, j);
 				continue;
 			}
-			dis = (ball->center - brick[i][j]->center).scala();
+			dis = (b->center - brick[i][j]->center).scala();
 			if (min < dis) continue;
 
 			float
-				cx = ball->center.x,
-				cy = ball->center.y;
+				cx = b->center.x,
+				cy = b->center.y;
 
 			if (cx >= fmin(brick[i][j]->bvtx[0].x, brick[i][j]->bvtx[1].x) &&
 				cx <= fmax(brick[i][j]->bvtx[0].x, brick[i][j]->bvtx[1].x) &&
@@ -299,7 +339,7 @@ void Object::brickCollision() {
 				cy <= fmax(brick[i][j]->bvtx[2].y, brick[i][j]->bvtx[1].y)) {
 				c = i, r = j;
 				
-				if (ball->type == BALL_STAR) {
+				if (b->star_time) {
 					isCollision = true;
 					nVec = Vector2D();
 					continue;
@@ -313,7 +353,7 @@ void Object::brickCollision() {
 					cy > brick[i][j]->center.y) {
 					isCollision = true;
 					collision_point = BRICK_TOP;
-					nVec = ball->center - brick[i][j]->center;
+					nVec = b->center - brick[i][j]->center;
 					nVec.normalizer();
 				}
 				// 우측 면 충돌
@@ -322,7 +362,7 @@ void Object::brickCollision() {
 					cx > brick[i][j]->center.x) {
 					isCollision = true;
 					collision_point = BRICK_RIGHT;
-					nVec = ball->center - brick[i][j]->center;
+					nVec = b->center - brick[i][j]->center;
 					nVec.normalizer();
 				}
 				// 아랫 면 충돌
@@ -331,7 +371,7 @@ void Object::brickCollision() {
 					cy < brick[i][j]->center.y) {
 					isCollision = true;
 					collision_point = BRICK_BOTTOM;
-					nVec = ball->center - brick[i][j]->center;
+					nVec = b->center - brick[i][j]->center;
 					nVec.normalizer();
 				}
 				// 좌측 면 충돌
@@ -340,41 +380,41 @@ void Object::brickCollision() {
 					cx < brick[i][j]->center.x) {
 					isCollision = true;
 					collision_point = BRICK_LEFT;
-					nVec = ball->center - brick[i][j]->center;
+					nVec = b->center - brick[i][j]->center;
 					nVec.normalizer();
 				}
 				// 모서리 충돌 판정
 				else {
 					// 좌 상단 모서리 충돌
 					if (cx < brick[i][j]->center.x && cy > brick[i][j]->center.y
-						&& RADIUS >= (ball->center - brick[i][j]->vtx[0]).scala()) {
+						&& RADIUS >= (b->center - brick[i][j]->vtx[0]).scala()) {
 						isCollision = true;
 						collision_point = BRICK_LEFT_TOP;
-						nVec = ball->center - brick[i][j]->center;
+						nVec = b->center - brick[i][j]->center;
 						nVec.normalizer();
 					}
 					// 우 상단 모서리 충돌
 					else if (cx > brick[i][j]->center.x && cy > brick[i][j]->center.y
-						&& RADIUS >= (ball->center - brick[i][j]->vtx[1]).scala()) {
+						&& RADIUS >= (b->center - brick[i][j]->vtx[1]).scala()) {
 						isCollision = true;
 						collision_point = BRICK_RIGHT_TOP;
-						nVec = ball->center - brick[i][j]->center;
+						nVec = b->center - brick[i][j]->center;
 						nVec.normalizer();
 					}
 					// 우 하단 모서리 충돌
 					else if (cx > brick[i][j]->center.x && cy < brick[i][j]->center.y
-						&& RADIUS >= (ball->center - brick[i][j]->vtx[2]).scala()) {
+						&& RADIUS >= (b->center - brick[i][j]->vtx[2]).scala()) {
 						isCollision = true;
 						collision_point = BRICK_RIGHT_BOTTOM;
-						nVec = ball->center - brick[i][j]->center;
+						nVec = b->center - brick[i][j]->center;
 						nVec.normalizer();
 					}
 					// 좌 하단 모서리 충돌
 					else if (cx < brick[i][j]->center.x && cy < brick[i][j]->center.y
-						&& RADIUS >= (ball->center - brick[i][j]->vtx[3]).scala()) {
+						&& RADIUS >= (b->center - brick[i][j]->vtx[3]).scala()) {
 						isCollision = true;
 						collision_point = BRICK_LFET_BOTTOM;
-						nVec = ball->center - brick[i][j]->center;
+						nVec = b->center - brick[i][j]->center;
 						nVec.normalizer();
 					}
 					else { min = 80; }
@@ -392,12 +432,13 @@ void Object::brickCollision() {
 			// 아이템 박스
 			else if (brick[c][r]->type == BRICK_ITEMBOX) {
 				if (collision_point == BRICK_BOTTOM ||
-					ball->type == BALL_STAR) {
+					b->star_time || b->type == BALL_FIRE) {
 					brick[c][r]->collision();
 				}
 			}
-			ball->direction = ball->direction + 2 * nVec ;
-			ball->direction.normalizer();
+			b->direction = ball->direction + 2 * nVec ;
+			b->direction.normalizer();
+			if (b->type == BALL_FIRE) b->setType(BALL_NONE);
 		}
 	}
 }
@@ -436,38 +477,38 @@ void Object::itemCollision(int c, int r) {
 	}
 }
 
+void Object::shootFire() {
+	static int time = 200;
+	float dis = 10000, tmp;
+	int c, r;
+	if (ball->type != BALL_FLOWER) return;
+	if (ball->star_time) return;
 
-void Object::drawIntersection(Vector2D* l2l, Vector2D* p2l, Vector2D* c2l, Vector2D* col) {
-	glPointSize(5);
-	glColor3f(0, 0, 1);
-	glBegin(GL_POINTS);
-	glVertex2f(l2l->x, l2l->y);
-	glVertex2f(p2l->x, p2l->y);
-	glVertex2f(c2l->x, c2l->y);
-	glVertex2f(col->x, col->y);
-	glEnd();
+	time--;
+	if (time == 0) {
+		time = 200;
+		fireball->center = Vector2D(
+			ball->center.x + ball->direction.x * 10,
+			ball->center.y + ball->direction.y * 10);
+		fireball->setType(BALL_FIRE);
 
-	glColor3f(0, 1, 0);
-	glBegin(GL_LINES);
-	glVertex2f(ball->center.x, ball->center.y);
-	glVertex2f(l2l->x, l2l->y);
-
-	glVertex2f(ball->center.x, ball->center.y);
-	glVertex2f(p2l->x, p2l->y);
-	glEnd();
-
-	float    delta, theta;
-	float    x, y;
-	delta = 2 * PI / BALLSLICE;
-	glColor3f(1, 0, 0);
-	glBegin(GL_LINE_LOOP);
-	for (int i = 0; i < BALLSLICE; i++) {
-		theta = delta * i;
-		x = RADIUS * cos(theta) + c2l->x;
-		y = RADIUS * sin(theta) + c2l->y;
-		glVertex2f(x, y);
+		for (int i = 0; i < BRICK_COL; i++) {
+			for (int j = 0; j < BRICK_ROW; j++) {
+				if (brick[i][j] == NULL) continue;
+				if (brick[i][j]->type == BRICK_ITEM)
+					continue;
+				tmp = (ball->center - brick[i][j]->center).scala();
+				if (dis > tmp) {
+					dis = tmp;
+					c = i;
+					r = j;
+				}
+			}
+		}
+		fireball->direction = brick[c][r]->center - ball->center;
+		fireball->direction.normalizer();
+		fireball->speed = 3;
 	}
-	glEnd();
 }
 
 // 두 선분의 교점을 반환

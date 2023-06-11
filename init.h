@@ -17,6 +17,8 @@
 #define			BALL_NORMAL				0
 #define			BALL_FLOWER				1
 #define			BALL_STAR				2
+#define			BALL_FIRE				3
+#define			BALL_NONE				4
 
 
 

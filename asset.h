@@ -19,6 +19,11 @@ public:
 	void drawStar(float x, float y, float a);
 	void drawMarioIdle(float x, float y, bool f, int t);
 	void drawMarioJump(float x, float y, bool f, int t);
+	void drawMarioFall(float x, float y, bool f, int t);
+	void drawLuigiMove(float x, float y, bool f, int t);
 	void drawCoin(float x, float y);
 	void drawNumber(float x, float y, int n);
+	void drawCloud(float x, float y, int s);
+	void drawWallCloud(float x, float y, float s);
+	void drawFireBall(float x, float y, float a);
 };

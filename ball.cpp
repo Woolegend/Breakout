@@ -3,36 +3,60 @@
 
 Ball::Ball(float x, float y) : center(x, y)
 {
-    speed = 1.5;
-    time = 0;
+    speed = 2;
+    star_time = 0;
     type = BALL_NORMAL;
     direction = Vector2D(0, 1);
     direction.normalizer();
 }
 
 void Ball::draw() {
-    if(direction.x < 0)
-        asset.drawMarioJump(center.x, center.y, true, type);
-    else
-        asset.drawMarioJump(center.x, center.y, false, type);
+    if (type == BALL_NONE) return;
+    if (type == BALL_FIRE) {
+        static int angle = 0;
+        asset.drawFireBall(center.x, center.y, angle += 10);
+        return;
+    }
+    int t = star_time ? BALL_STAR : type;
+    if (direction.x < 0) {
+        if(direction.y > 0){
+            asset.drawMarioJump(center.x, center.y, true, t);
+            return;
+        }
+        else {
+            asset.drawMarioFall (center.x, center.y, true, t);
+            return;
+        }
+    }
+    else{
+        if (direction.y > 0) {
+            asset.drawMarioJump(center.x, center.y, false, t);
+            return;
+        }
+        else {
+            asset.drawMarioFall(center.x, center.y, false, t);
+        return;
+    }
+    }
 }
 
 void Ball::update() {
     center = center + speed * direction;
-    if (time) {
-        if (--time == 0) {
-            type = BALL_NORMAL;
-        }
-    }
+    if(star_time) star_time--;
 }
 
 void Ball::setType(int t) {
     if (t == BALL_STAR) {
-        type = BALL_STAR;
-        time = 2000;
+        star_time = 2000;
     }
     else if (t == BALL_FLOWER) {
         type = BALL_FLOWER;
+    }
+    else if (t == BALL_FIRE) {
+        type = BALL_FIRE;
+    }
+    else if (t == BALL_NONE) {
+        type = BALL_NONE;
     }
 }
 

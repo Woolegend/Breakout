@@ -27,7 +27,7 @@ public:
     Vector2D center;
     Vector2D direction;
     Asset asset;
-    int type, time;
+    int type, star_time;
     float speed;
 
     Ball(float x, float y);
